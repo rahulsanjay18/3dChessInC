@@ -45,18 +45,20 @@ The picture of the cube above is consistent with these directons, but it was onl
 
 ## Pieces
 Now, we generalize the pieces, using the scheme I outlined above, while keeping in mind how our 2D chess game works.
+Note, c ∈ [1, 7]
 
-| Name      | Colloquial Name | Movement Vector                   | Attack Vector |
-|-----------|-----------------|-----------------------------------|---------------|
-| FRook     | Rook            | <X±Δx,0,0>, <0,Y±Δy,0>, <0,0,Z±Δz>|               |
-| ERook     | Priest          |                                   |               |
-| VRook     | Bishop          |                                   |               |
-| FEKnight  | Paladin         |                                   |               |
-| EVKnight  | Dragon          |                                   |               |
-| FVKnight  | Knight          |                                   |               |
-| King      | King            |                                   |               |
-| Queen     | Queen           |                                   |               |
-| Pawn      | Pawn            |                                   |               |
-| FEAdvisor | General         |                                   |               |
-| EVAdvisor | Wizard          |                                   |               |
-| FVAdvisor | Duke            |                                   |               |
+|Name     |Colloquial Name|Movement Vector                                                                                                                                                                    |Attack Vector            |
+|---------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
+|FRook    |Rook           |<X±c,0,0>, <0,Y±c,0>, <0,0,Z±c>                                                                                                                                                    |Same as Movement         |
+|ERook    |Priest         |<X±c,Y±c,0>, <0,Y±c,Z±c>, <X±c,0,Z±c>, <X±c,Y∓c,0>, <0,Y±c,Z∓c>, <X±c,0,Z∓c>                                                                                                       |Same as Movement         |
+|VRook    |Bishop         |<X±c,Y±c,Z±c>, <X±c,Y±c,Z∓c>, <X±c,Y∓c,Z±c>,  <X±c,Y∓c,Z∓c>                                                                                                                        |Same as Movement         |
+|FEKnight |Paladin        |<X+2,Y±1,0>, <X+2,0,Z±1>, <X-2,Y±1,0>, <X-2,0,Z±1>, <X±1,Y+2,0>, <0,Y+2,Z±1>, <X±1,Y-2,0>, <0,Y-2,Z±1>, <0,Y±1,Z+2>, <X±1,0,Z+2>, <0,Y±1,Z-2>, <X±1,0,Z-2>                         |Same as Movement         |
+|EVKnight |Dragon         |<X±2,Y±2,Z±1>, <X±2,Y±2,Z∓1>, <X±2,Y±1,Z±2>, <X±2,Y∓1,Z±2>, <X±1,Y±2,Z±2>, <X∓1,Y±2,Z±2>, <X±2,Y∓2,Z±1>, <X±2,Y∓2,Z∓1>, <X∓2,Y±1,Z±2>, <X∓2,Y∓1,Z±2>, <X±1,Y±2,Z∓2>, <X∓1,Y±2,Z∓2> |Same as Movement         |
+|FVKnight |Knight         |<X+2,Y±1,Z±1>, <X+2,Y±1,Z∓1>, <X-2,Y±1,Z±1>, <X-2,Y±1,Z∓1>, <X±1,Y+2,Z±1>, <X±1,Y+2,Z∓1>, <X±1,Y-2,Z±1>, <X±1,Y-2,Z∓1>, <X±1,Y±1,Z+2>, <X±1,Y∓1,Z+2>, <X±1,Y±1,Z-2>, <X±1,Y∓1,Z-2> |Same as Movement         |
+|King     |King           |Combine Rook, Priest, and Bishop, set c=1                                                                                                                                          |Same as Movement         |
+|Queen    |Queen          |Combine Rook, Priest, and Bishop                                                                                                                                                   |Same as Movement         |
+|Pawn     |Pawn           |Rook, with c=2 on first move, c=1 otherwise                                                                                                                                        |Priest & Bishop, with c=1|
+|FEAdvisor|General        |Combine Rook and Priest                                                                                                                                                            |Same as Movement         |
+|EVAdvisor|Wizard         |Combine Priest and Bishop                                                                                                                                                          |Same as Movement         |
+|FVAdvisor|Duke           |Combine Rook and Bishop                                                                                                                                                            |Same as Movement         |
+
