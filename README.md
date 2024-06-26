@@ -46,17 +46,17 @@ The picture of the cube above is consistent with these directons, but it was onl
 ## Pieces
 Now, we generalize the pieces, using the scheme I outlined above, while keeping in mind how our 2D chess game works.
 
-| Name      | Colloquial Name | Movement Vector  | Attack Vector |
-|-----------|-----------------|----------------- |---------------|
-| FRook     | Rook            | <X±Δx,Y±Δy,Z±Δz> |               |
-| ERook     | Priest          |                  |               |
-| VRook     | Bishop          |                  |               |
-| FEKnight  | Paladin         |                  |               |
-| EVKnight  | Dragon          |                  |               |
-| FVKnight  | Knight          |                  |               |
-| King      | King            |                  |               |
-| Queen     | Queen           |                  |               |
-| Pawn      | Pawn            |                  |               |
-| FEAdvisor | General         |                  |               |
-| EVAdvisor | Wizard          |                  |               |
-| FVAdvisor | Duke            |                  |               |
+| Name      | Colloquial Name | Movement Vector                   | Attack Vector |
+|-----------|-----------------|-----------------------------------|---------------|
+| FRook     | Rook            | <X±Δx,0,0>, <0,Y±Δy,0>, <0,0,Z±Δz>|               |
+| ERook     | Priest          |                                   |               |
+| VRook     | Bishop          |                                   |               |
+| FEKnight  | Paladin         |                                   |               |
+| EVKnight  | Dragon          |                                   |               |
+| FVKnight  | Knight          |                                   |               |
+| King      | King            |                                   |               |
+| Queen     | Queen           |                                   |               |
+| Pawn      | Pawn            |                                   |               |
+| FEAdvisor | General         |                                   |               |
+| EVAdvisor | Wizard          |                                   |               |
+| FVAdvisor | Duke            |                                   |               |
