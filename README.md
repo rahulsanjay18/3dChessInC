@@ -7,7 +7,8 @@ This is my version of 3D Chess. It is not the same as the 4x4x4 stuff I'd seen o
 ## The General Idea
 Picture a cube that is made up of smaller cubes (side length: 1 unit), such that the length, width and height of the big cube is 8 units long. We call this an 8x8x8 lattice, or, our game board.
 
-The pieces, therefore, have 3 different directions they can theoretically move in, the x direction, the y direction, and the z direction. 
+The pieces, therefore, have 3 different directions they can theoretically move in, the x direction, the y direction, and the z direction.
+
 ![](imgs/cube6274282860234311237.png)
 
 Generalizing the pieces in traditional chess to 3D requires a slightly different view of how pieces move.
