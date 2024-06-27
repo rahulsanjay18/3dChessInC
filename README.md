@@ -1,6 +1,6 @@
 # CubeChess in C
 ## Purpose
-This is similar to my other project which was doing this in python, but I realized that there were generally better ways I could go about representing the board, checking if a piece is already there, etc. I missed coding in C, so this was a good excuse to change the language as well.
+This is similar to my other project that I started in 2021 which was doing this in python, but I realized that there were generally better ways I could go about representing the board, checking if a piece is already there, etc. I missed coding in C, so this was a good excuse to change the language as well.
 
 This is my version of 3D Chess. It is not the same as the 4x4x4 stuff I'd seen on sale on Amazon, but rather a new game that tries to generalize the game of chess to 3D. This involves creating new pieces that take advantage of the newly added dimension, and the movements that you can do with them. In fact, I think there are more new pieces than there are old ones. For what it's worth, I have no knowledge of anyone else doing this, but if someone has, please let me know because I'd love to see how others tackle this.
 
@@ -102,21 +102,19 @@ So, from here, we're going to come up with some rules for our piece placement, a
 - The "Advisors" shall occupy the four corners of the first layer and last layer. Their order of arrangement is still TBD, but I'd want it to be hard for them to get out, much like the Rook in 2D chess.
 -  Try to preserve symmetry radially outward from the center four squares on the first and last layer. this is not important, but a nice-to-have.
 
-
-final board setup is TBD, and prone to change. its a hard problem.
-
+### The Initial Board
 Layer 1 (x=0):
 
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
 |---|---|---|---|---|---|---|---|---|---|
-|7  |g  |w  |p  |r  |r  |t  |u  |g  |7  |
+|7  |g  |w  |p  |r  |r  |b  |u  |g  |7  |
 |6  |u  |d  |d  |n  |p  |n  |d  |w  |6  |
-|5  |t  |n  |b  |t  |t  |b  |d  |p  |5  |
-|4  |r  |p  |b  |q  |q  |b  |n  |r  |4  |
-|3  |r  |n  |b  |q  |k  |b  |p  |r  |3  |
-|2  |p  |d  |b  |t  |t  |b  |n  |t  |2  |
+|5  |b  |n  |b  |t  |t  |b  |d  |p  |5  |
+|4  |r  |p  |t  |q  |q  |t  |n  |r  |4  |
+|3  |r  |n  |t  |q  |k  |t  |p  |r  |3  |
+|2  |p  |d  |b  |t  |t  |b  |n  |b  |2  |
 |1  |w  |d  |n  |p  |n  |d  |d  |u  |1  |
-|0  |g  |u  |t  |r  |r  |p  |w  |g  |0  |
+|0  |g  |u  |b  |r  |r  |p  |w  |g  |0  |
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
 
 Layer 2 (x=1):
@@ -209,15 +207,27 @@ Layer 8 (x=7):
 |---|---|---|---|---|---|---|---|---|---|
 |7  |G  |W  |P  |R  |R  |B  |U  |G  |7  |
 |6  |U  |D  |D  |N  |P  |N  |D  |W  |6  |
-|5  |T  |N  |B  |T  |T  |B  |D  |P  |5  |
-|4  |R  |P  |B  |Q  |Q  |T  |N  |R  |4  |
-|3  |R  |N  |T  |Q  |K  |B  |P  |R  |3  |
-|2  |P  |D  |B  |T  |T  |B  |N  |T  |2  |
+|5  |B  |N  |B  |T  |T  |B  |D  |P  |5  |
+|4  |R  |P  |T  |Q  |Q  |T  |N  |R  |4  |
+|3  |R  |N  |T  |Q  |K  |T  |P  |R  |3  |
+|2  |P  |D  |B  |T  |T  |B  |N  |B  |2  |
 |1  |W  |D  |N  |P  |N  |D  |D  |U  |1  |
 |0  |G  |U  |B  |R  |R  |P  |W  |G  |0  |
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
 
+### Explanation
+final board setup is TBD, and prone to change. its a hard problem. following the center-covering principle, each piece type covers the center 4 at least once. Specifically,
+- Paladins: 1
+- Knights: 2
+- Dragons: 3
+- Bishops: 1
+- Priests: 2
 
+I'm fairly confident that Priests can only cover one center square at a time. Figured theyd be more useful in the center. Bishops have the same problem, but this arrangement is a little more symmetrical, and I like it better. That means that the center squares are covered 9 times each.
+
+Still need to calculate the "reachability" of each of the pieces. I used to have the calculations and then I lost it.
+
+## Appendix
 Board template:
 
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
