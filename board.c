@@ -3,7 +3,7 @@
 void init_game(){
 
     // Declare Board
-    struct board game_board = {.b={0,0,0,0,0,0,0,0}, .rep = 'x'};
+    struct board game_board = {.b={FULL_LAYER,FULL_LAYER,0,0,0,0,FULL_LAYER,FULL_LAYER}, .rep = 'x'};
 
 
     /*
@@ -43,5 +43,21 @@ void init_game(){
     // Queen Declarations
     struct board queen_w = {.b={0,0,0,0,0,0,0,0}, .rep = 'q'};
     struct board queen_b = {.b={0,0,0,0,0,0,0,0}, .rep = 'Q'};
+
+    // Pawn
+    struct board pawn_w = {.b={0,0,0,0,0,0,0,0}, .rep = 'i'};
+    struct board pawn_b = {.b={0,0,0,0,0,0,0,0}, .rep = 'I'};
+
+    // General Declarations
+    struct board general_w = {.b={0,0,0,0,0,0,0,0}, .rep = 'g'};
+    struct board general_b = {.b={0,0,0,0,0,0,0,0}, .rep = 'G'};
+
+    // Wizard Declarations
+    struct board wizard_w = {.b={0,0,0,0,0,0,0,0}, .rep = 'w'};
+    struct board wizard_b = {.b={0,0,0,0,0,0,0,0}, .rep = 'W'};
+
+    // Duke Declarations
+    struct board duke_w = {.b={0,0,0,0,0,0,0,0}, .rep = 'u'};
+    struct board duke_b = {.b={0,0,0,0,0,0,0,0}, .rep = 'U'};
 
 }

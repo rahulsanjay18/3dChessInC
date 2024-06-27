@@ -1,6 +1,9 @@
+#include <stdint.h>
+
+#define FULL_LAYER 0xffffffffffffffff
 
 typedef struct board{
-    long long unsigned int b[8]; // the actual board
+    uint64_t b[8]; // the actual board
     char rep; // the char that represents the pieces in this board
 };
 
@@ -47,6 +50,19 @@ struct board queen_b;
 // Pawn
 struct board pawn_w;
 struct board pawn_b;
+
+// Advisors
+// General
+struct board general_w;
+struct board general_b;
+
+// Wizard
+struct board wizard_w;
+struct board wizard_b;
+
+// Duke
+struct board duke_w;
+struct board duke_b;
 
 // functions
 void init_game();
