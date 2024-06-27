@@ -7,62 +7,69 @@ typedef struct board{
     char rep; // the char that represents the pieces in this board
 };
 
-// overall game board
-extern struct board game_board;
+typedef struct game_state
+{
+    struct board white_pieces;
+    struct board black_pieces;
+    // maybe put white and black pieces in their own section
+    struct board bw;
+    struct board bb;
 
-// Boards per piece
+    struct board tw;
+    struct board tb;
 
-// Straight pieces
-// Bishop
-extern struct board bishop_w;
-extern struct board bishop_b;
+    struct board rw;
+    struct board rb;
 
-// Priest
-extern struct board priest_w;
-extern struct board priest_b;
+    struct board nw;
+    struct board nb;
 
-// Rook
-extern struct board rook_w;
-extern struct board rook_b;
+    struct board pw;
+    struct board pb;
 
-// L pieces (Knight-like)
-// Knight
-extern struct board knight_w;
-extern struct board knight_b;
+    struct board dw;
+    struct board db;
 
-// Paladin
-extern struct board paladin_w;
-extern struct board paladin_b;
+    struct board kw;
+    struct board kb;
 
-// Dragon
-extern struct board dragon_w;
-extern struct board dragon_b;
+    struct board qw;
+    struct board qb;
 
-// Unique Pieces
-// King
-struct board king_w;
-struct board king_b;
+    struct board iw;
+    struct board ib;
+    
+    struct board gw;
+    struct board gb;
 
-// Queen
-struct board queen_w;
-struct board queen_b;
+    struct board ww;
+    struct board wb;
 
-// Pawn
-struct board pawn_w;
-struct board pawn_b;
+    struct board dw;
+    struct board db;
 
-// Advisors
-// General
-struct board general_w;
-struct board general_b;
+    // boolean
+    char white_turn;
+    // boolean array
+    char castling;
+    union en_p{
+        char en_passant[3];
+        struct coords{
+            uint8_t x;
+            uint8_t y;
+            uint8_t z;
+        }xyz;
+        
+    }en_passant;
 
-// Wizard
-struct board wizard_w;
-struct board wizard_b;
+    char half_move;
 
-// Duke
-struct board duke_w;
-struct board duke_b;
+    uint16_t full_move;
+
+};
+
+extern struct game_state *game;
+
 
 // functions
 void init_game();
