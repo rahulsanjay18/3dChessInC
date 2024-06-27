@@ -100,7 +100,7 @@ So, from here, we're going to come up with some rules for our piece placement, a
 - Similar thing with the Paladin, Knight, Dragon, and Rook, though they might already be able to do it on their own (need to calculate that). In that case, 4-ish would be a good idea.
 - The 2nd and 7th layer is just a layer of pawns. Personally I think this is kind of boring, but for now it is okay, and still does conform to what 2D chess does.
 - The "Advisors" shall occupy the four corners of the first layer and last layer. Their order of arrangement is still TBD, but I'd want it to be hard for them to get out, much like the Rook in 2D chess.
--  Try to preserve symmetry radially outward from the center four squares on the first and last layer.
+-  Try to preserve symmetry radially outward from the center four squares on the first and last layer. this is not important, but a nice-to-have.
 
 
 final board setup is TBD, and prone to change. its a hard problem.
@@ -109,14 +109,14 @@ Layer 1 (x=0):
 
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
 |---|---|---|---|---|---|---|---|---|---|
-|7  |g  |w  |p  |r  |r  |b  |u  |g  |7  |
+|7  |g  |w  |p  |r  |r  |t  |u  |g  |7  |
 |6  |u  |d  |d  |n  |p  |n  |d  |w  |6  |
 |5  |t  |n  |b  |t  |t  |b  |d  |p  |5  |
-|4  |r  |p  |b  |q  |q  |t  |n  |r  |4  |
-|3  |r  |n  |t  |q  |k  |b  |p  |r  |3  |
+|4  |r  |p  |b  |q  |q  |b  |n  |r  |4  |
+|3  |r  |n  |b  |q  |k  |b  |p  |r  |3  |
 |2  |p  |d  |b  |t  |t  |b  |n  |t  |2  |
 |1  |w  |d  |n  |p  |n  |d  |d  |u  |1  |
-|0  |g  |u  |b  |r  |r  |p  |w  |g  |0  |
+|0  |g  |u  |t  |r  |r  |p  |w  |g  |0  |
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
 
 Layer 2 (x=1):
