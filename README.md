@@ -123,14 +123,14 @@ Layer 2 (x=1):
 
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
 |---|---|---|---|---|---|---|---|---|---|
-|7  |x  |x  |x  |x  |x  |x  |x  |x  |7  |
-|6  |x  |x  |x  |x  |x  |x  |x  |x  |6  |
-|5  |x  |x  |x  |x  |x  |x  |x  |x  |5  |
-|4  |x  |x  |x  |x  |x  |x  |x  |x  |4  |
-|3  |x  |x  |x  |x  |x  |x  |x  |x  |3  |
-|2  |x  |x  |x  |x  |x  |x  |x  |x  |2  |
-|1  |x  |x  |x  |x  |x  |x  |x  |x  |1  |
-|0  |x  |x  |x  |x  |x  |x  |x  |x  |0  |
+|7  |i  |i  |i  |i  |i  |i  |i  |i  |7  |
+|6  |i  |i  |i  |i  |i  |i  |i  |i  |6  |
+|5  |i  |i  |i  |i  |i  |i  |i  |i  |5  |
+|4  |i  |i  |i  |i  |i  |i  |i  |i  |4  |
+|3  |i  |i  |i  |i  |i  |i  |i  |i  |3  |
+|2  |i  |i  |i  |i  |i  |i  |i  |i  |2  |
+|1  |i  |i  |i  |i  |i  |i  |i  |i  |1  |
+|0  |i  |i  |i  |i  |i  |i  |i  |i  |0  |
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
 
 Layer 3 (x=2):
@@ -193,28 +193,28 @@ Layer 7 (x=6):
 
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
 |---|---|---|---|---|---|---|---|---|---|
-|7  |x  |x  |x  |x  |x  |x  |x  |x  |7  |
-|6  |x  |x  |x  |x  |x  |x  |x  |x  |6  |
-|5  |x  |x  |x  |x  |x  |x  |x  |x  |5  |
-|4  |x  |x  |x  |x  |x  |x  |x  |x  |4  |
-|3  |x  |x  |x  |x  |x  |x  |x  |x  |3  |
-|2  |x  |x  |x  |x  |x  |x  |x  |x  |2  |
-|1  |x  |x  |x  |x  |x  |x  |x  |x  |1  |
-|0  |x  |x  |x  |x  |x  |x  |x  |x  |0  |
+|7  |I  |I  |I  |I  |I  |I  |I  |I  |7  |
+|6  |I  |I  |I  |I  |I  |I  |I  |I  |6  |
+|5  |I  |I  |I  |I  |I  |I  |I  |I  |5  |
+|4  |I  |I  |I  |I  |I  |I  |I  |I  |4  |
+|3  |I  |I  |I  |I  |I  |I  |I  |I  |3  |
+|2  |I  |I  |I  |I  |I  |I  |I  |I  |2  |
+|1  |I  |I  |I  |I  |I  |I  |I  |I  |1  |
+|0  |I  |I  |I  |I  |I  |I  |I  |I  |0  |
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
 
 Layer 8 (x=7):
 
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
 |---|---|---|---|---|---|---|---|---|---|
-|7  |x  |x  |x  |x  |x  |x  |x  |x  |7  |
-|6  |x  |x  |x  |x  |x  |x  |x  |x  |6  |
-|5  |x  |x  |x  |x  |x  |x  |x  |x  |5  |
-|4  |x  |x  |x  |x  |x  |x  |x  |x  |4  |
-|3  |x  |x  |x  |x  |x  |x  |x  |x  |3  |
-|2  |x  |x  |x  |x  |x  |x  |x  |x  |2  |
-|1  |x  |x  |x  |x  |x  |x  |x  |x  |1  |
-|0  |x  |x  |x  |x  |x  |x  |x  |x  |0  |
+|7  |G  |W  |P  |R  |R  |B  |U  |G  |7  |
+|6  |U  |D  |D  |N  |P  |N  |D  |W  |6  |
+|5  |T  |N  |B  |T  |T  |B  |D  |P  |5  |
+|4  |R  |P  |B  |Q  |Q  |T  |N  |R  |4  |
+|3  |R  |N  |T  |Q  |K  |B  |P  |R  |3  |
+|2  |P  |D  |B  |T  |T  |B  |N  |T  |2  |
+|1  |W  |D  |N  |P  |N  |D  |D  |U  |1  |
+|0  |G  |U  |B  |R  |R  |P  |W  |G  |0  |
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |<yz|
 
 
