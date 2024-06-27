@@ -37,7 +37,9 @@ So, our pieces in 3D chess should be able to move through each of these parts of
 For the sake of simplicity, I will be using (x,y,z) notation to describe piece movements. I do think it would be better to have a kind of algebraic notation, and I have some ideas for that, but for now, it is easier to communicate in x,y, z.
 
 Here are the meanings of each direction, using books lined up on a bookshelf:
+
 ![](imgs/books_lined_up.jpg)
+
 The X direction is the "layer" of the board we are in.  Each unit in the x direction is like moving to the next book in line.
 The Z direction is moving in the direction of the length of the spine of the book.
 The Y direction is  moving perpendicular to the spine of the book, while remaining on the same book
