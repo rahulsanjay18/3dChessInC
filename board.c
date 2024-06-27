@@ -49,8 +49,8 @@ void init_game(){
     struct board pawn_b = {.b={0,0,0,0,0,0,0,0}, .rep = 'I'};
 
     // General Declarations
-    struct board general_w = {.b={0,0,0,0,0,0,0,0}, .rep = 'g'};
-    struct board general_b = {.b={0,0,0,0,0,0,0,0}, .rep = 'G'};
+    struct board general_w = {.b={0x8100000000000081,0,0,0,0,0,0,0}, .rep = 'g'};
+    struct board general_b = {.b={0,0,0,0,0,0,0,8100000000000081}, .rep = 'G'};
 
     // Wizard Declarations
     struct board wizard_w = {.b={0,0,0,0,0,0,0,0}, .rep = 'w'};

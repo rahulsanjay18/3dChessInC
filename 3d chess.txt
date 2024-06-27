@@ -1,0 +1,314 @@
+- Use a single bitboard (512 long) for each piece type & color, and for the overall board
+	- also special rules too (castling & en passant)
+- use & operation to see if a piece exists on the board, check for nonzero result
+- How do we code moves?  (board updates)
+	- I guess you can just find how the board maps to the bit array and do the update
+	- each piece move is a function?
+	- seperate for attacks? special thing to attack the king?
+- Evaluation function
+	- assign large number when someone's won (opposite signs for each color)
+	- 0 if draw
+	- for each square, adjust piece value by certain amount
+	- extract all legal moves, use eval function to get a score
+	- minimax alg
+	- take board and depth
+
+Structure of the code:
+- Python flask server handles session management
+	- takes in moves, sends back board state
+	- takes in uploaded file, converts it to something the c program can read
+- C libraries do game logic
+	- this INCLUDES move validation, which sucks but I think it makes more sense here
+	- input: piece location (x,y,z) and end location (
+- How do we render the board onto a webpage?
+	- react app https://discourse.threejs.org/t/three-js-with-react/54823
+	- representing the board?
+	- render in 3d?
+	- use three.js i guess. Seems kinda shitty though. but i doubt theres a simpler way. https://threejs.org/docs/#manual/en/introduction/Installation
+	- lattice with letters inside, nothing crazy https://discourse.threejs.org/t/3d-grid-of-lines/3850
+
+Code flow:
+- Start game
+	- initialize game objects
+		- populate initial game board
+			- piece specific bitboard
+			- white piece bitboard
+			- black piece bitboard
+		- init move counters
+			- half move
+			- full move
+		- init castling stuff
+		- init en-passant stuff (empty for now, but reserve the memory)
+		- generate list of valid moves for white and black (destinations only)
+			- part of valid move set is path checking
+			- castling is added to this initial set as a king move but is not naively checked when making a move (need to think on this)
+			- need this for checkmate alg
+- Game Loop
+	- display the board
+	- prompt white to make their move
+	- white enters their move
+		- check if there is a white piece in the start cube
+		- check if the destination is in the list of valid moves
+		- If castle:
+			- Check if there exists a valid path between king and the intended castling target
+			- if there is
+				- swap the pieces
+					- this really just means zero out king bitboard, and set the bit its supposed to go to
+					- zero out the general bit that is swapping out, and put that in the king's place
+				- take out castling rights for that color
+				- Check for checks and checkmate (i think)
+					- if checkmate, end game
+					- if check, must set some bool to true, and use different logic to check the next players move
+				- Log the move (not necessary now but probably should be done soon)
+				- recalculate moves
+			- if not
+				- go to invalid
+		- If invalid
+			- i dont know yet, probably just send error and re prompt
+		- If valid
+			- Zero out bit in the destination position
+				- record what piece it was, if there was one
+				- some logic for recording captures in the future would be nice, but not necessary right now.
+			- set the destination bit as high in the bitboard of the piece we moved.
+			- Check for checks and checkmate
+				- if checkmate, end game
+				- if check, must set some bool to true, and use different logic to check the next players move
+			- Log the move
+			- recalculate possible moves
+			
+	- display the board
+	- prompt black to make their move
+	- black enters their move
+		- check if there is a black piece in the start cube
+		- check if the destination is in the list of valid moves
+		- If castle:
+			- Check if there exists a valid path between king and the intended castling target
+			- if there is
+				- swap the pieces
+					- this really just means zero out king bitboard, and set the bit its supposed to go to
+					- zero out the general bit that is swapping out, and put that in the king's place
+				- take out castling rights for that color
+				- Check for checks and checkmate (i think)
+					- if checkmate, end game
+					- if check, must set some bool to true, and use different logic to check the next players move
+				- Log the move (not necessary now but probably should be done soon)
+				- recalculate moves
+			- if not
+				- go to invalid
+		- If invalid
+			- i dont know yet, probably just send error and re prompt
+		- If valid
+			- Zero out bit in the destination position
+				- record what piece it was, if there was one
+				- some logic for recording captures in the future would be nice, but not necessary right now.
+			- set the destination bit as high in the bitboard of the piece we moved.
+			- Check for checks and checkmate
+				- if checkmate, end game
+				- if check, must set some bool to true, and use different logic to check the next players move
+			- Log the move
+			- recalculate possible moves
+			
+
+Some notes on the structure of this thing:
+	- game state should be independent of the display
+		- means that any print statements being done for the benefit of the player must have data passed to it to read off of
+		- this allows us to easily test the C code, but when we move it to a server, we aren't changing any of the game logic
+	- Saving and loading is probably a good idea, but not technically necessary
+		- might make testing easier though.
+	- Maybe only do move calculation for the king?
+		- Well, this still amounts to the same thing. because we don't know which piece is checking the king
+			
+Some questions:
+- how do i make a really big bitmap in c?
+	- might just have to do an array of integers and work the math out there?
+	- x dir is each integer, y is each row in the layer, z is the column in the layer
+
+Algebraic Notation:
+- example: i2e4-4e4
+	- 1st char is the piece you move (color is implied)
+	- position 2,3,4 is the position of the piece
+	- the middle indicates what is happening
+		- hyphen for basic move
+		- x for capture (not needed when submitting a move, but good for recording)
+	- position 6, 7, 8 is where the piece is intending to move
+- Check: add a + at the end: i2e4-4e4+
+- Checkmate: add a # at the end i2e4-4e4#
+- Castle: use O-O-O, but the hyphens describe what side we castle (y then z)
+	- O+O+O top right
+	- O+O-O bottom right
+	- O-O+O top left
+	- O+O-O bottom left
+- Pawn Promotion: i2e4-4e4/q
+
+
+EFEN Format important terms:
+1. 512 bytes of board data, with | between layers, and / between rows? Total: 7 + 56 = 63 + 512 = 575 bytes
+	- can alternatively get rid of the / and | to save 63 bytes, making this back to 512
+2. 1 byte on whose move it is (w or b)
+	- alternatively can be 1 bit, but it might be more trouble than its worth reading and writing that bit
+3. 8 bytes on castling capability: 4 corners, 2 players. (10 for clearer reperesentation)
+	- alternatively can simply just be 8 bits, or 1 byte
+4. En Passant cube: records which cube the en passant can be done on. Specifically records the valid end state of the pawn doing capture (3 bytes)
+	- any single position on the board can also be represented with 9 bits, or at least 2 bytes
+5. Half move clock: 1 byte, needs to be able to count to 50 (so, at least 6 bits)
+	- we could move this to 6 bits but I suspect the fifty move rule needs to be scaled up
+6. Full move number: We probably need this to be really high, so 16 bits (4 bytes) at LEAST. 
+	- I think the max number of moves needs 15 bits if we are using the 50 move rule.
+
+Example EFEN of starting board:
+Most of these use the byte representation, not by the bit. Newlines are added for your readability. Debating if I want to add them in the file.
+
+gwprrbug/uddnpndw/bnbttbdp/rptqqtnr/rntkqtpr/pdbttbnb/wdnpnddu/gubrrpwg|
+iiiiiiii/iiiiiiii/iiiiiiii/iiiiiiii/iiiiiiii/iiiiiiii/iiiiiiii/iiiiiiii|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII|
+GWPRRBUG/UDDNPNDW/BNBTTBDP/RPTQQTNR/RNTKQTPR/PDBTTBNB/WDNPNDDU/GUBRRPWG|
+w
+w01234b01234
+-
+0
+1
+
+After 1. i4e4
+
+gwprrbug/uddnpndw/bnbttbdp/rptqqtnr/rntkqtpr/pdbttbnb/wdnpnddu/gubrrpwg|
+iiiiiiii/iiiiiiii/iiiiiiii/iiiiiiii/iiixiiii/iiiiiiii/iiiiiiii/iiiiiiii|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxixxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII|
+GWPRRBUG/UDDNPNDW/BNBTTBDP/RPTQQTNR/RNTKQTPR/PDBTTBNB/WDNPNDDU/GUBRRPWG|
+w
+255
+3e4
+0
+1
+
+After 2. i5e4
+
+gwprrbug/uddnpndw/bnbttbdp/rptqqtnr/rntkqtpr/pdbttbnb/wdnpnddu/gubrrpwg|
+iiiiiiii/iiiiiiii/iiiiiiii/iiiiiiii/iiixiiii/iiiiiiii/iiiiiiii/iiiiiiii|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxixxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxIxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII/IIIxIIII/IIIIIIII/IIIIIIII/IIIIIIII|
+GWPRRBUG/UDDNPNDW/BNBTTBDP/RPTQQTNR/RNTKQTPR/PDBTTBNB/WDNPNDDU/GUBRRPWG|
+w
+255
+6e4
+0
+2
+
+After 3. k2e4
+
+gwprrbug/uddnpndw/bnbttbdp/rptqqtnr/rntkqtpr/pdbttbnb/wdnpnddu/gubrrpwg|
+iiiiiiii/iiiiiiii/iiiiiiii/iiiiiiii/iiixiiii/iiiiiiii/iiiiiiii/iiiiiiii|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxixxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxIxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx/xxxxxxxx|
+IIIIIIII/IIIIIIII/IIIIIIII/IIIIIIII/IIIxIIII/IIIIIIII/IIIIIIII/IIIIIIII|
+GWPRRBUG/UDDNPNDW/BNBTTBDP/RPTQQTNR/RNTKQTPR/PDBTTBNB/WDNPNDDU/GUBRRPWG|
+w
+15
+-
+1
+2
+
+total bytes in each board state:
+585 bytes, assuming no newlines
+
+with newlines:
+598 bytes
+
+Using only bits, and no concern for readability (floor for representation):
+517 bytes
+
+our range is about 81 bytes. I think using the 585 byte pattern is better, maybe take out the / and |. Easier to access via code.
+Might be a good idea to change the format for human readable stuff on the UI.
+
+Some notes on char representation:
+	dec hex	     dec hex
+r = 162 72	 R = 122 52
+t = 164 74   T = 124 54
+b = 142 62   B = 102 42
+p = 160 70   P = 120 50
+d = 144 64   D = 104 44
+n = 156 6e   N = 116 4e
+k = 153 6b   K = 113 4b
+q = 161 71   Q = 121 51
+i = 151 69   I = 111 49
+g = 147 67   G = 107 47
+w = 167 77   W = 127 57
+u = 165 75   U = 125 55
+
+Text Board Rep:
+Moves are 1 indexed, board rep is 0 indexed
+
+x=0								 	 	x=1								 		x=2
+   a   b   c   d   e   f   g   h	 	   a   b   c   d   e   f   g   h	 	   a   b   c   d   e   f   g   h		
+ +---+---+---+---+---+---+---+---+		 +---+---+---+---+---+---+---+---+		 +---+---+---+---+---+---+---+---+
+8|   |   |   |   |   |   |   |   |8		8|   |   |   |   |   |   |   |   |8		8|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+7|   |   |   |   |   |   |   |   |7		7|   |   |   |   |   |   |   |   |7		7|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+6|   |   |   |   |   |   |   |   |6		6|   |   |   |   |   |   |   |   |6		6|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+5|   |   |   |   |   |   |   |   |5		5|   |   |   |   |   |   |   |   |5		5|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+4|   |   |   |   |   |   |   |   |4		4|   |   |   |   |   |   |   |   |4		4|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+3|   |   |   |   |   |   |   |   |3		3|   |   |   |   |   |   |   |   |3		3|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+2|   |   |   |   |   |   |   |   |2		2|   |   |   |   |   |   |   |   |2		2|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 
+1|   |   |   |   |   |   |   |   |1		1|   |   |   |   |   |   |   |   |1		1|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+		 +---+---+---+---+---+---+---+---+		 +---+---+---+---+---+---+---+---+
+   a   b   c   d   e   f   g   h	 	  a   b   c   d   e   f   g   h	 		  a   b   c   d   e   f   g   h		
+		
+x=3								 	 	x=4								 		x=5
+   a   b   c   d   e   f   g   h	 	   a   b   c   d   e   f   g   h	 	   a   b   c   d   e   f   g   h	
+ +---+---+---+---+---+---+---+---+		 +---+---+---+---+---+---+---+---+		 +---+---+---+---+---+---+---+---+
+8|   |   |   |   |   |   |   |   |8		8|   |   |   |   |   |   |   |   |8		8|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+7|   |   |   |   |   |   |   |   |7		7|   |   |   |   |   |   |   |   |7		7|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+6|   |   |   |   |   |   |   |   |6		6|   |   |   |   |   |   |   |   |6		6|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+5|   |   |   |   |   |   |   |   |5		5|   |   |   |   |   |   |   |   |5		5|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+4|   |   |   |   |   |   |   |   |4		4|   |   |   |   |   |   |   |   |4		4|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+3|   |   |   |   |   |   |   |   |3		3|   |   |   |   |   |   |   |   |3		3|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+
+2|   |   |   |   |   |   |   |   |2		2|   |   |   |   |   |   |   |   |2		2|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 
+1|   |   |   |   |   |   |   |   |1		1|   |   |   |   |   |   |   |   |1		1|   |   |   |   |   |   |   |   |
+ +---+---+---+---+---+---+---+---+		 +---+---+---+---+---+---+---+---+		 +---+---+---+---+---+---+---+---+
+   a   b   c   d   e   f   g   h	 	  a   b   c   d   e   f   g   h	 		  a   b   c   d   e   f   g   h		
+		
+x=6								 	 	x=7								 		
+   a   b   c   d   e   f   g   h	 	   a   b   c   d   e   f   g   h	 	
+ +---+---+---+---+---+---+---+---+		 +---+---+---+---+---+---+---+---+		
+8|   |   |   |   |   |   |   |   |8		8|   |   |   |   |   |   |   |   |8		
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		
+7|   |   |   |   |   |   |   |   |7		7|   |   |   |   |   |   |   |   |7		
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		
+6|   |   |   |   |   |   |   |   |6		6|   |   |   |   |   |   |   |   |6		
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		
+5|   |   |   |   |   |   |   |   |5		5|   |   |   |   |   |   |   |   |5		
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		
+4|   |   |   |   |   |   |   |   |4		4|   |   |   |   |   |   |   |   |4		
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		
+3|   |   |   |   |   |   |   |   |3		3|   |   |   |   |   |   |   |   |3		
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		
+2|   |   |   |   |   |   |   |   |2		2|   |   |   |   |   |   |   |   |2		
+ +---+---+---+---+---+---+---+---+ 		 +---+---+---+---+---+---+---+---+ 		
+1|   |   |   |   |   |   |   |   |1		1|   |   |   |   |   |   |   |   |1		
+ +---+---+---+---+---+---+---+---+		 +---+---+---+---+---+---+---+---+		
+   a   b   c   d   e   f   g   h	 	  a   b   c   d   e   f   g   h	 		
