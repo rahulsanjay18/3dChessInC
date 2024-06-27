@@ -19,7 +19,7 @@ Structure of the code:
 	- takes in uploaded file, converts it to something the c program can read
 - C libraries do game logic
 	- this INCLUDES move validation, which sucks but I think it makes more sense here
-	- input: piece location (x,y,z) and end location (
+	- input: piece location (x,y,z) and end location (x', y', z')
 - How do we render the board onto a webpage?
 	- react app https://discourse.threejs.org/t/three-js-with-react/54823
 	- representing the board?
