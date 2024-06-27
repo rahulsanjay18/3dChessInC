@@ -66,6 +66,8 @@ Note, c ∈ [1, 7]
 |FVAdvisor|Duke           |Combine Rook and Bishop                                                                                                                                                            |Same as Movement         |u, U                                   |
 
 ## Initial Board
+board setup is TBD.
+
 Layer 1 (x=0):
 
 |zy>|0  |1  |2  |3  |4  |5  |6  |7  |
