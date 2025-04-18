@@ -1,8 +1,8 @@
 #include <stdint.h>
-#include "coordinates.h"
 #include <stdbool.h>
+#include "coordinates.h"
 
-struct Board;
+typedef struct Board Board;
 
 void set(Coordinates* location);
 void unset(Coordinates* location);
