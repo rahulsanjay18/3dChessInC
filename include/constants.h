@@ -1,4 +1,5 @@
-#include <string.h>
-
+#ifndef CONST
+#define CONST
 char CHARACTER_MAP[] = "rRtTbBpPdDnNkKqQiIgGwWuU";
-int SIZE_OF_CHARACTER_MAP = 25;
+#define SIZE_OF_CHARACTER_MAP 25
+#endif

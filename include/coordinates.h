@@ -1,3 +1,6 @@
+#ifndef COORDS
+#define COORDS
 typedef struct Coordinates Coordinates;
 
-void Coordinates__create(int x, int y, int z);
+Coordinates* Coordinates__create(int x, int y, int z);
+#endif

@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "coordinates.h"
 typedef struct Coordinates{
 	int x;
