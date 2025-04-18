@@ -2,10 +2,10 @@
 
 ## Classes
 Coordinates:
-    - Contains:
-        - x
-        - y
-        - z
+- Contains:
+    - x
+    - y
+    - z
 
 Board
 - Contains:
@@ -77,28 +77,28 @@ SQL Communicator:
         - log\_move
 
 Game:
-    - Contains:
-        - Game state
-        - Start Move
-        - End Move
-    - Functions:
-        - Initialize game
-            - Create a new game state
-        - move: Moves piece
-            - Input: xyz, to xyz
-            - Output: Success or not.
-        - game\_loop:
-            1. Initialize board
-            2. begin game loop
-            3. wait for move
-            4. Make move.
-            5. if move succeeds, stuff should be updated in the game state. if not, nothing changes
-            6. nullify move vars
+- Contains:
+    - Game state
+    - Start Move
+    - End Move
+- Functions:
+    - Initialize game
+        - Create a new game state
+    - move: Moves piece
+        - Input: xyz, to xyz
+        - Output: Success or not.
+    - game\_loop:
+        1. Initialize board
+        2. begin game loop
+        3. wait for move
+        4. Make move.
+        5. if move succeeds, stuff should be updated in the game state. if not, nothing changes
+        6. nullify move vars
 
 Game "GUI"
-    Contains:
-        - Game
-    Functions:
-        - send\_move: Send the move to the game
-        - get\_board
+Contains:
+    - Game
+Functions:
+    - send\_move: Send the move to the game
+    - get\_board
         
