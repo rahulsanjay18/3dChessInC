@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include "constants.h"
@@ -42,7 +43,7 @@ void Board__init(Board* board, char repr, char* board_repr[BOARD_SIZE][BOARD_SIZ
 }
 
 Board* Board__create(char repr){
-	Board* board = (Board*) balloc(sizeof(Board));
+	Board* board = (Board*) malloc(sizeof(Board));
 	Board__init(board, repr);
 	return board;
 }
