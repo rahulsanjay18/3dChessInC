@@ -19,10 +19,13 @@ void GameState__init(GameState* game_state, char* board_repr[BOARD_SIZE][BOARD_S
 GameState* GameState__create(char* board_repr[BOARD_SIZE][BOARD_SIZE], bool is_white_turn, bool castle_status[CASTLES], bool is_checkmate){
 	GameState* result = (GameState*) malloc(sizeof(GameState));
 	
-	GameState__init(game_state, board_repr[BOARD_SIZE][BOARD_SIZE], is_white_turn, castle_status[CASTLES], is_checkmate)
+	GameState__init(game_state, board_repr[BOARD_SIZE][BOARD_SIZE], is_white_turn, castle_status[CASTLES], is_checkmate);
 	return result;
 }
-void make_move(Coordinates* start, Coordinates* end);
-void pretty_print_board(char* board[BOARD_SIZE][BOARD_SIZE]);
+void make_move(GameState* game_state, Coordinates* start, Coordinates* end){
+	Boards* boards = game_state->boards;
+	char piece = get_piece(boards, start);
+	set_piece(game_state->boards, start);
+}
 int get_piece_num(Coordinates* location);
 char get_piece_char(Coordinates* location);

@@ -21,21 +21,21 @@ Boards* Boards__create(char* board_repr[BOARD_SIZE][BOARD_SIZE]){
 	return result;
 }
 
-void set_piece(char piece, Coordinates* coordinates){
+void Boards__set_piece(Boards* boards, char piece, Coordinates* coordinates){
 	int index = char_to_int(piece);
-	Board* board = full_board[index];
+	Board* board = boards->full_board[index];
 	set(board, coordinates);
 }
 
-void unset_piece(char piece, Coordinates* coordinates){
+void Boards__unset_piece(Boards* boards, char piece, Coordinates* coordinates){
 	int index = char_to_int(piece);
-	Board* board = full_board[index];
+	Board* board = board->full_board[index];
 	unset(board, coordinates);
 }
 
-char get_piece(Coordinates* coordinates){
+char Boards__get_piece(Boards* boards, Coordinates* coordinates){
 	for(int i = 0; i < SIZE_OF_CHARACTER_MAP; i++){
-		if(get(full_board[i], coordinates)){
+		if(get(boards->full_board[i], coordinates)){
 			return CHARACTER_MAP[i];
 		}
 	}

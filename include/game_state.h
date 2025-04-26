@@ -14,6 +14,4 @@ void make_move(Coordinates* start, Coordinates* end);
 void pretty_print_board(char* board[BOARD_SIZE][BOARD_SIZE]);
 int get_piece_num(Coordinates* location);
 char get_piece_char(Coordinates* location);
-void save(char* filepath);
-void load(char* filepath);
 #endif

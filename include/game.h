@@ -5,6 +5,9 @@
 typedef struct Game Game;
 
 void initialize_game();
-bool move(Coordinates* start, Coordinates* end);
-void game_loop();
+Game* Game__create();
+bool Game__move(Coordinates* start, Coordinates* end);
+void Game__loop(Game* game);
+void Game__save(Game* game, char* filepath);
+void Game__load(char* filepath);
 #endif
