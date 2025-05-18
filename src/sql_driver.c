@@ -3,6 +3,7 @@
 #include <sqlite3.h>
 #include "constants.h"
 #include "coordinates.h"
+#include "sql_driver.h"
 #ifndef SQL_DRIVER
 #define SQL_DRIVER
 
