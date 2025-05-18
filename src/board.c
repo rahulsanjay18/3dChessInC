@@ -23,9 +23,11 @@ struct Board{
  */
 uint64_t _get_bit_shift_value(unsigned int y, unsigned int z){
 	return BOARD_SIZE * y + z;
+}
 
 uint64_t _get_yz_integer(unsigned int y, unsigned int z){
 	return 1 << _get_bit_shift_value(y, z);
+}
 
 void Board__init(Board* board, char repr, char* board_repr[BOARD_SIZE][BOARD_SIZE]){
 	board->representing_character = repr;
@@ -33,8 +35,8 @@ void Board__init(Board* board, char repr, char* board_repr[BOARD_SIZE][BOARD_SIZ
 		for(int y = 0; y < BOARD_SIZE; y++){
 			for(int z = 0; z < BOARD_SIZE; z++){
 				if(board_repr[x][y][z] == repr){
-					coordinates = Coordinates__create(x, y, z);
-					set(board, coordinates);
+					Coordinates* coordinates = Coordinates__create(x, y, z);
+					Board__set(board, coordinates);
 					Coordinates__destroy(coordinates);
 				}
 			}
@@ -42,25 +44,27 @@ void Board__init(Board* board, char repr, char* board_repr[BOARD_SIZE][BOARD_SIZ
 	}
 }
 
-Board* Board__create(char repr){
+Board* Board__create(char repr, char* board_repr[BOARD_SIZE][BOARD_SIZE]){
 	Board* board = (Board*) malloc(sizeof(Board));
-	Board__init(board, repr);
+	Board__init(board, repr, board_repr);
 	return board;
 }
 
-void set(Board* self, Coordinates* location){
+void Board__set(Board* self, Coordinates* location){
 	// Note that the array index goes in the x direction.
 	uint64_t plane = (self->bitboard[location->x]);
 	plane |= _get_yz_integer(location->y, location->z);
 	self->bitboard[location->x] = plane;
+}
 
-void unset(Board* self, Coordinates* location){	
+void Board__unset(Board* self, Coordinates* location){	
 	uint64_t plane = (self->bitboard[location->x]);
 	plane &= !(_get_yz_integer(location->y, location->z));
 	self->bitboard[location->x] = plane;
 }
 
-bool get(Board* self, Coordinates* location){
+bool Board__get(Board* self, Coordinates* location){
 	unsigned int y = location->y;
 	unsigned int z = location->z;
-	return bool((self->bitboard[location->x] & _get_yz_integer(y, z)) >> _get_bit_shift_value(y, z));
+	return (bool)((self->bitboard[location->x] & _get_yz_integer(y, z)) >> _get_bit_shift_value(y, z));
+}

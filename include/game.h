@@ -9,5 +9,4 @@ Game* Game__create();
 bool Game__move(Coordinates* start, Coordinates* end);
 void Game__loop(Game* game);
 void Game__save(Game* game, char* filepath);
-void Game__load(char* filepath);
 #endif

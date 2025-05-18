@@ -1,11 +1,5 @@
 #include <stdlib.h>
 #include "coordinates.h"
-typedef struct Coordinates{
-	int x;
-	int y;
-	int z;
-}Coordinates;
-
 void Coordinates__init(Coordinates* self, int x, int y, int z){
 	self->x = x;
 	self->y = y;

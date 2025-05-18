@@ -1,11 +1,15 @@
 #include <stdlib.h>
 #include "game_state.h"
+#include "game.h"
 
 struct Game{
 	GameState game_state;
+	Coordinates* start_move;
+	Coordinates* end_move;
+
 };
 
-DEFAULT_FILEPATH = "initial_save_file.bin"
+char * DEFAULT_FILEPATH = "initial_save_file.bin";
 
 void Game__init(Game* game, char* filepath){
 	// load file contents
@@ -20,6 +24,7 @@ Game* Game__create(char* filepath){
 		filepath = DEFAULT_FILEPATH;
 	}
 	Game__init(game, filepath);
+	return game;
 }
 bool Game__move(Game* game, Coordinates* start, Coordinates* end){
 	// chech if move is valid?

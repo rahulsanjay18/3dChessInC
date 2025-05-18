@@ -3,7 +3,7 @@
 #include "board.h"
 #ifndef BOARDS
 #define BOARDS
-struct Boards;
+typedef struct Boards Boards;
 
 Boards* Boards__create(char* board_repr[BOARD_SIZE][BOARD_SIZE]);
 void Boards__set_piece(Boards* boards, char piece, Coordinates* coordinates);

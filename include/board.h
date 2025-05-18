@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
+#include "constants.h"
 #include "coordinates.h"
 #ifndef BOARD
 #define BOARD
@@ -17,7 +18,7 @@
 
 typedef struct Board Board;
 
-Board* Board__create();
+Board* Board__create(char repr, char* board_repr[BOARD_SIZE][BOARD_SIZE]);
 
 /*
  * Given the board and coordinates, set the bit at the location (x,y,z) to 1.
@@ -26,15 +27,15 @@ Board* Board__create();
  * the y direction is every group of 8 in the uint64 int the array, and the z 
  * is the individual bit in each group of 8.
  */
-void set(Board* self, Coordinates* location);
+void Board__set(Board* self, Coordinates* location);
 
 /*
  * Given the board and the coordinates, set the bit at the location (x, y, z) to 0.
  */
-void unset(Board* self, Coordinates* location);
+void Board__unset(Board* self, Coordinates* location);
 
 /*
  * Return the value at thhe given position on the board.
  */
-bool get(Board* self, Coordinates* location);
+bool Board__get(Board* self, Coordinates* location);
 #endif
