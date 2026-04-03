@@ -41,5 +41,23 @@ bool is_move_valid(char piece, Coordinates* start, Coordinates* end){
 	sqlite3_exec(&DB, exists_cmd_populated, exists_callback, &found, &err_msg);
 	return found;
 }
-bool get_valid_moves(char piece, Coordinates* xyz, bool atk_ok);
-void log_move();
+Coordinates* get_valid_moves(char piece, Coordinates* xyz){
+	/*
+	 * Retrieve the valid moves for a given piece.
+	 *
+	 * Args:
+	 * 	piece: The piece that is set to move.
+	 * 	xyz: The location of the piece on the board.
+	 *
+	 * Returns:
+	 * 	A list of valid move coordinates for the given piece and location.
+	 * 	Caller is responsible for freeing memory allocated.
+	 */
+	return 0;
+}
+
+void log_move(){
+	/*
+	 * Logs the move to a file.
+	 */
+}
