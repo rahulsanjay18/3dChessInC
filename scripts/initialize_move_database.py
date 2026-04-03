@@ -181,9 +181,9 @@ def get_paladin_moves(x0,y0,z0,p):
     return moves
 
 def get_dragon_moves(x0,y0,z0,p):
-    scalars = [[2, 2, 1],[2,1,2],[1,2,2]]
+    vectors = [[2, 2, 1],[2,1,2],[1,2,2]]
     moves=[]
-    for s in scalars:
+    for s in vectors:
         moves.append(create_move_entry(x0,y0,z0,x0+s[0], y0+s[1], z0+s[2],p, jump=True))
         moves.append(create_move_entry(x0,y0,z0,x0+s[0], y0+s[1], z0-s[2],p, jump=True))
         moves.append(create_move_entry(x0,y0,z0,x0+s[0], y0-s[1], z0+s[2],p, jump=True))
@@ -196,22 +196,17 @@ def get_dragon_moves(x0,y0,z0,p):
     return moves
 
 def get_knight_moves(x0,y0,z0,p):
-    moves = copy(get_paladin_moves(x0, y0, z0,p))
-
-    for m in moves: 
-        new_move = copy(m)
-        print(m)
-        if m['x0'] == m['x1']:
-            m['x1'] = m['z1'] if abs(m['y1'] - m['y0']) == 2 else m['y1']
-            #new_move['x1'] = new_move['z1'] if abs(m['y1'] - m['y0']) == 2 else new_move['y1']
-
-        elif m['y0'] == m['y1']:
-            m['y1'] = m['z1'] if abs(m['x1'] - m['x0']) == 2 else m['x1']
-            #m['y1'] = m['z1'] if abs(m['x1'] - m['x0']) == 2 else m['x1']
-
-        elif m['z0'] == m['z1']:
-            m['z1'] = m['y1'] if abs(m['x1'] - m['x0']) == 2 else m['x1']
-            #m['z1'] = m['y1'] if abs(m['x1'] - m['x0']) == 2 else m['x1']
+    vectors = [[1, 1, 2],[1,2,1],[2,1,1]]
+    moves=[]
+    for s in vectors:
+        moves.append(create_move_entry(x0,y0,z0,x0+s[0], y0+s[1], z0+s[2],p, jump=True))
+        moves.append(create_move_entry(x0,y0,z0,x0+s[0], y0+s[1], z0-s[2],p, jump=True))
+        moves.append(create_move_entry(x0,y0,z0,x0+s[0], y0-s[1], z0+s[2],p, jump=True))
+        moves.append(create_move_entry(x0,y0,z0,x0+s[0], y0-s[1], z0-s[2],p, jump=True))
+        moves.append(create_move_entry(x0,y0,z0,x0-s[0], y0+s[1], z0+s[2],p, jump=True))
+        moves.append(create_move_entry(x0,y0,z0,x0-s[0], y0+s[1], z0-s[2],p, jump=True))
+        moves.append(create_move_entry(x0,y0,z0,x0-s[0], y0-s[1], z0+s[2],p, jump=True))
+        moves.append(create_move_entry(x0,y0,z0,x0-s[0], y0-s[1], z0-s[2],p, jump=True))
 
     return moves
 
@@ -290,17 +285,12 @@ pieces = 'rtbpdnkqigwu'
 pieces += pieces.upper()
 
 for p in tqdm(pieces):
-    print(p)
     for x in range(BOARD_UPPER_BOUNDS):
         for y in range(BOARD_UPPER_BOUNDS):
             for z in range(BOARD_UPPER_BOUNDS):
-#                print(x,y,z)
                 candidate_moves=handle_piece_with_starting_position(x,y,z,p)
                 moves =[]
                 for m in candidate_moves:
                     if check_in_bounds(m['x1'],m['y1'],m['z1']):
-                        print(m)
                         moves.append(m)
                 db['moves'].insert_all(moves)
-#                for m in moves:
-#                    print(f'{m["x1"] - m["x0"]} {m["y1"] - m["y0"]} {m["z1"] - m["z0"]}')
