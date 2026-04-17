@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <sqlite3.h>
+#include <string.h>
 #include "constants.h"
 #include "coordinates.h"
 #include "sql_driver.h"
@@ -37,6 +38,7 @@ bool is_move_valid(char piece, Coordinates* start, Coordinates* end){
 	char* err_msg = 0;
 	int found = 0;
 	char exists_cmd_populated[exists_cmd_length];
+	memset(exists_cmd_populated, 0, exists_cmd_length);
 	sprintf(exists_cmd_populated, exists_cmd, table_name, piece, start->x, start->y, start->z, end->x, end->y, end->z);
 	sqlite3_exec(DB, exists_cmd_populated, exists_callback, &found, &err_msg);
 	return found;
