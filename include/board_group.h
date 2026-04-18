@@ -1,8 +1,11 @@
+#pragma once
+
 #include "constants.h"
 #include "coordinates.h"
 #include "board.h"
 #ifndef BOARDS
 #define BOARDS
+
 typedef struct Boards Boards;
 
 Boards* Boards__create(char* board_repr[BOARD_SIZE][BOARD_SIZE]);

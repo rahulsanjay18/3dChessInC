@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <sqlite3.h>
+#include "sqlite/sqlite3.h"
 #include <string.h>
 #include "constants.h"
 #include "coordinates.h"

@@ -1,9 +1,10 @@
+#ifndef BOARD
+#define BOARD
 #include <stdint.h>
 #include <stdbool.h>
 #include "constants.h"
 #include "coordinates.h"
-#ifndef BOARD
-#define BOARD
+
 /******************************
  * MODULE DEFINITION:
  * This is the board module, a simple struct and associated functions that

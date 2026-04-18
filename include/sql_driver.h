@@ -1,5 +1,6 @@
+#pragma once
 #include <stdbool.h>
-#include <sqlite3.h>
+#include "sqlite/sqlite3.h"
 #include "constants.h"
 #include "coordinates.h"
 #ifndef SQL_DRIVER

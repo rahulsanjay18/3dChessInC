@@ -1,11 +1,15 @@
+#ifndef GAME_STATE
+#define GAME_STATE
 #include <stdbool.h>
 #include "constants.h"
 #include "board_group.h"
-#ifndef GAME_STATE
-#define GAME_STATE
-typedef struct GameState{ 
+#include "coordinates.h"
+
+struct Boards;
+
+typedef struct GameState{
 	char board_representation[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE];
-	Boards* boards;
+	struct Boards* boards;
 	int captured_pieces[SIZE_OF_CHARACTER_MAP];
 	bool is_white_turn;
 	bool* castle_status;

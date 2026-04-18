@@ -27,7 +27,7 @@ Game* Game__create(char* filepath){
 	return game;
 }
 bool Game__move(Game* game, Coordinates* start, Coordinates* end){
-	// chech if move is valid?
+	// check if move is valid?
 	// make move?
 }
 void Game__loop(Game* game){

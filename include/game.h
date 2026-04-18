@@ -1,7 +1,8 @@
-#include "coordinates.h"
-#include "game_state.h"
 #ifndef GAME
 #define GAME
+#include "coordinates.h"
+#include "game_state.h"
+
 typedef struct Game Game;
 
 void initialize_game();
