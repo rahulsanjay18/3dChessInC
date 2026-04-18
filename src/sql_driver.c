@@ -10,7 +10,7 @@ sqlite3* DB;
 char* db_name = "3dChess";
 char* table_name = "moves";
 
-char* exists_cmd = "SELECT EXISTS (SELECT * FROM %s M WHERE M.piece = %i AND M.x0 = %i AND M.y0 = %i AND M.z0 = %i AND M.x1 = %i AND M.y1 = %i AND M.z1 = %i";
+char* exists_cmd = "SELECT EXISTS (SELECT * FROM %s M WHERE M.piece = '%c' AND M.x0 = %i AND M.y0 = %i AND M.z0 = %i AND M.x1 = %i AND M.y1 = %i AND M.z1 = %i)";
 
 
 int open_db(){
