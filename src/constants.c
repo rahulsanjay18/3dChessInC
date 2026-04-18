@@ -1,5 +1,6 @@
 #include "constants.h"
-
+const char CHARACTER_MAP[] = "rRtTbBpPdDnNkKqQiIgGwWuU";
+const char DB_PATH[] = "../../db/3DChess.db";
 int char_to_int(char c){
 	for (int i = 0; i < SIZE_OF_CHARACTER_MAP; i++){
 		if(CHARACTER_MAP[i] == c){

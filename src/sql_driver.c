@@ -1,10 +1,17 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "sqlite/sqlite3.h"
+#include "sqlite3.h"
 #include <string.h>
 #include "constants.h"
 #include "coordinates.h"
 #include "sql_driver.h"
+#include <stdlib.h>
+sqlite3* DB;
+char* db_name = "3dChess";
+char* table_name = "moves";
+
+char* exists_cmd = "SELECT EXISTS (SELECT * FROM %s M WHERE M.piece = '%c' AND M.x0 = %i AND M.y0 = %i AND M.z0 = %i AND M.x1 = %i AND M.y1 = %i AND M.z1 = %i)";
+
 
 int open_db(){
 	/*
@@ -37,8 +44,8 @@ bool is_move_valid(char piece, Coordinates* start, Coordinates* end){
 	 */
 	char* err_msg = 0;
 	int found = 0;
-	char exists_cmd_populated[exists_cmd_length];
-	memset(exists_cmd_populated, 0, exists_cmd_length);
+	int exists_cmd_length = (int) (strlen(exists_cmd) + strlen(table_name));
+	char *exists_cmd_populated=malloc(exists_cmd_length * sizeof(char));
 	sprintf(exists_cmd_populated, exists_cmd, table_name, piece, start->x, start->y, start->z, end->x, end->y, end->z);
 	sqlite3_exec(DB, exists_cmd_populated, exists_callback, &found, &err_msg);
 	return found;
