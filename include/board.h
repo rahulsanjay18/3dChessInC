@@ -12,12 +12,15 @@
  * piece. If the bit in the bitboard is set to high, that means the piece
  * that the bitboard is representing is in that location.
  *
- * All functions in this interfact simply deal with manipulating the bits 
+ * All functions in this interface deal with manipulating the bits
  * in the bitboard.
  */
 
 
-typedef struct Board Board;
+typedef struct Board{
+    uint64_t bitboard[BOARD_SIZE];
+    char representing_character;
+} Board;
 
 Board* Board__create(char repr, char* board_repr[BOARD_SIZE][BOARD_SIZE]);
 
@@ -28,15 +31,15 @@ Board* Board__create(char repr, char* board_repr[BOARD_SIZE][BOARD_SIZE]);
  * the y direction is every group of 8 in the uint64 int the array, and the z 
  * is the individual bit in each group of 8.
  */
-void Board__set(Board* self, Coordinates* location);
+void Board__set(Board* self, const Coordinates* location);
 
 /*
  * Given the board and the coordinates, set the bit at the location (x, y, z) to 0.
  */
-void Board__unset(Board* self, Coordinates* location);
+void Board__unset(Board* self, const Coordinates* location);
 
 /*
- * Return the value at thhe given position on the board.
+ * Return the value at the given position on the board.
  */
-bool Board__get(Board* self, Coordinates* location);
+bool Board__get(Board* self, const Coordinates* location);
 #endif

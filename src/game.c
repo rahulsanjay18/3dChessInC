@@ -2,12 +2,6 @@
 #include "game_state.h"
 #include "game.h"
 
-struct Game{
-	GameState game_state;
-	Coordinates* start_move;
-	Coordinates* end_move;
-
-};
 
 char * DEFAULT_FILEPATH = "initial_save_file.bin";
 
@@ -29,6 +23,7 @@ Game* Game__create(char* filepath){
 bool Game__move(Game* game, Coordinates* start, Coordinates* end){
 	// check if move is valid?
 	// make move?
+	return false;
 }
 void Game__loop(Game* game){
 	// while game is running

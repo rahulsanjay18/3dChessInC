@@ -5,10 +5,6 @@
 #include "coordinates.h"
 #include "board.h"
 
-struct Board{
-	uint64_t bitboard[BOARD_SIZE];
-	char representing_character;
-};
 
 /*
  * The following two functions are used to make it easier
@@ -21,15 +17,19 @@ struct Board{
  * value (BOARD_SIZE ...)
  * These functions make that easier.
  */
-uint64_t _get_bit_shift_value(unsigned int y, unsigned int z){
+uint64_t get_bit_shifted_value(unsigned int y, unsigned int z){
 	return BOARD_SIZE * y + z;
 }
 
-uint64_t _get_yz_integer(unsigned int y, unsigned int z){
-	return 1 << _get_bit_shift_value(y, z);
+uint64_t get_yz_integer(unsigned int y, unsigned int z){
+	return 1 << get_bit_shifted_value(y, z);
 }
 
 void Board__init(Board* board, char repr, char* board_repr[BOARD_SIZE][BOARD_SIZE]){
+	if (!board)
+	{
+		return;
+	}
 	board->representing_character = repr;
 	for(int x = 0; x < BOARD_SIZE; x++){
 		for(int y = 0; y < BOARD_SIZE; y++){
@@ -44,27 +44,31 @@ void Board__init(Board* board, char repr, char* board_repr[BOARD_SIZE][BOARD_SIZ
 	}
 }
 
-Board* Board__create(char repr, char* board_repr[BOARD_SIZE][BOARD_SIZE]){
+Board* Board__create(const char repr, char* board_repr[BOARD_SIZE][BOARD_SIZE]){
 	Board* board = (Board*) malloc(sizeof(Board));
 	Board__init(board, repr, board_repr);
 	return board;
 }
 
-void Board__set(Board* self, Coordinates* location){
+void Board__set(Board* self, const Coordinates* location){
 	// Note that the array index goes in the x direction.
 	uint64_t plane = (self->bitboard[location->x]);
-	plane |= _get_yz_integer(location->y, location->z);
+	plane |= get_yz_integer(location->y, location->z);
 	self->bitboard[location->x] = plane;
 }
 
-void Board__unset(Board* self, Coordinates* location){	
+void Board__unset(Board* self, const Coordinates* location){
 	uint64_t plane = (self->bitboard[location->x]);
-	plane &= !(_get_yz_integer(location->y, location->z));
+	plane &= !(get_yz_integer(location->y, location->z));
 	self->bitboard[location->x] = plane;
 }
 
-bool Board__get(Board* self, Coordinates* location){
+bool Board__get(Board* self, const Coordinates* location){
+	if (!self)
+	{
+		return NULL;
+	}
 	unsigned int y = location->y;
 	unsigned int z = location->z;
-	return (bool)((self->bitboard[location->x] & _get_yz_integer(y, z)) >> _get_bit_shift_value(y, z));
+	return (bool)((self->bitboard[location->x] & get_yz_integer(y, z)) >> get_bit_shifted_value(y, z));
 }
