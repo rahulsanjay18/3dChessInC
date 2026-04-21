@@ -38,10 +38,9 @@ void Coordinates__destroy(Coordinates** coordinates){
 	 * Deletes the coordinates object.
 	 *
 	 */
-	if(*coordinates){
-		free(*coordinates);
-		*coordinates=NULL;
-	}
+	if(!*coordinates)return;
+	free(*coordinates);
+	*coordinates=NULL;
 }
 
 void CoordinateNode__init(CoordinateNode* result, Coordinates* c)
@@ -68,18 +67,15 @@ CoordinateNode* CoordinateNode__create(Coordinates* c)
 
 void CoordinateNode__destroy(CoordinateNode** c)
 {
-	if (*c){
-		free(*(c));
-		*c=NULL;
-	}
+	if (!*c)return;
+	free(*(c));
+	*c=NULL;
 }
 
 void CoordinateList__init(CoordinateList* result, CoordinateNode* node)
 {
-	if (!result)
-	{
-		return;
-	}
+	if (!result) return;
+
 	result->head = NULL;
 	result->len = 0;
 	if (node)
@@ -98,11 +94,16 @@ CoordinateList* CoordinateList__create(CoordinateNode* node)
 
 void CoordinateList__destroy(CoordinateList** list)
 {
-	if(*list){
-		free(*list);
-		*list=NULL;
+	if(!*list)return;
+	CoordinateNode* temp = (*list)->head;
+	free(*list);
+	*list=NULL;
+	while (temp->next)
+	{
+		CoordinateNode__destroy(&temp);
+		temp = temp->next;
 	}
-
+	CoordinateNode__destroy(&temp);
 }
 
 void CoordinateList__add_node(CoordinateList* list, CoordinateNode* node)
@@ -172,10 +173,7 @@ void CoordinateList__delete_node_with_coordinate_value(CoordinateList* list, con
 }
 CoordinateNode* CoordinateList__retrieve_node_from_index(const CoordinateList* list, int index)
 {
-	if ((index >= list->len) ||	index < 0)
-	{
-		return NULL;
-	}
+	if ((index >= list->len) ||	index < 0) return NULL;
 	CoordinateNode* item = list->head;
 	while (index > 0)
 	{
