@@ -100,3 +100,24 @@ void CoordinateList__destroy(CoordinateList* coordinates)
 	}
 
 }
+
+void CoordinateList__add_node(CoordinateList* list, CoordinateNode* node)
+{
+
+}
+void CoordinateList__delete_node(CoordinateList* list, CoordinateNode* node)
+{
+
+}
+void CoordinateList__delete_node_with_coordinate_value(CoordinateList* list, Coordinates* coords)
+{
+
+}
+CoordinateNode* CoordinateList__retrieve_node_from_index(CoordinateList* list, int index)
+{
+	return NULL;
+}
+CoordinateNode* CoordinateList__pop_front(CoordinateList* list)
+{
+	return NULL;
+}

@@ -18,8 +18,10 @@ constexpr int TEST_Z2_COORD = 6;
 // Test creation of Coordinates
 TEST(CoordinateTestSuite, test_coordinate_creation_initializes_with_correct_xyz_values)
 {
+    // Act.
     const Coordinates* returned_coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
 
+    // Assert.
     EXPECT_EQ(returned_coords->x, TEST_X_COORD);
     EXPECT_EQ(returned_coords->y, TEST_Y_COORD);
     EXPECT_EQ(returned_coords->z, TEST_Z_COORD);
@@ -27,28 +29,39 @@ TEST(CoordinateTestSuite, test_coordinate_creation_initializes_with_correct_xyz_
 // Test destruction of Coordinates
 TEST(CoordinateTestSuite, test_coordinate_deletion_frees_the_memory)
 {
+    // Arrange.
     Coordinates* returned_coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
 
     EXPECT_TRUE(returned_coords != nullptr);
-
+    // Act.
     Coordinates__destroy(returned_coords);
 
+    // Assert.
     EXPECT_TRUE(returned_coords == nullptr);
 }
 
 TEST(CoordinateTestSuite, test_null_coordinate_deletion_does_nothing)
 {
+    // Arrange.
     Coordinates* returned_coords = nullptr;
+
+    // Act.
     Coordinates__destroy(returned_coords);
 
+    // Assert.
     EXPECT_TRUE(returned_coords == nullptr);
 }
 
 // Test creation of CoordinateNode
 TEST(CoordinateTestSuite, test_coordinate_node_creation_creates_non_null_pointer_and_initializes_coordinate_struct)
 {
+    // Arrange.
     Coordinates* returned_coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
+
+    // Act.
     CoordinateNode* node = CoordinateNode__create(returned_coords);
+
+    // Assert.
     EXPECT_EQ(node->next, nullptr);
     EXPECT_NE(node->c,nullptr);
     EXPECT_EQ(node->c->x, TEST_X_COORD);
@@ -59,7 +72,10 @@ TEST(CoordinateTestSuite, test_coordinate_node_creation_creates_non_null_pointer
 
 TEST(CoordinateTestSuite, test_coordinate_node_creation_with_null_coordinate_creates_non_null_pointer_but_null_members)
 {
+    // Act.
     CoordinateNode* node = CoordinateNode__create(nullptr);
+
+    // Assert.
     EXPECT_NE(node, nullptr);
     EXPECT_EQ(node->next, nullptr);
     EXPECT_EQ(node->c,nullptr);
@@ -88,9 +104,14 @@ TEST(CoordinateTestSuite, test_coordinate_node_deletion_frees_the_memory)
 // Test creation of CoordinateList
 TEST(CoordinateTestSuite, test_coordinatelist_creation_initializes_values_correctly)
 {
+    // Arrange.
     Coordinates* returned_coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
     CoordinateNode* node = CoordinateNode__create(returned_coords);
+
+    // Act.
     const CoordinateList* list = CoordinateList__create(node);
+
+    // Assert.
     EXPECT_EQ(list->head->next, nullptr);
     EXPECT_EQ(list->head, node);
     EXPECT_NE(list->head->c,nullptr);
@@ -122,12 +143,15 @@ TEST(CoordinateTestSuite, test_coordinate_list_deletion_frees_the_memory)
 // Test adding node to empty list
 TEST(CoordinateTestSuite, test_adding_node_to_empty_coordinate_list_initializes_the_head)
 {
+    // Arrange.
     CoordinateList* list = CoordinateList__create(nullptr);
     Coordinates* coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
     CoordinateNode* node = CoordinateNode__create(coords);
 
+    // Act.
     CoordinateList__add_node(list, node);
 
+    // Assert.
     EXPECT_EQ(list->head, node);
     EXPECT_EQ(list->len, 1);
     EXPECT_EQ(list->head->next, nullptr);
@@ -140,6 +164,7 @@ TEST(CoordinateTestSuite, test_adding_node_to_empty_coordinate_list_initializes_
 // Test adding node to list with one element
 TEST(CoordinateTestSuite, test_adding_node_to_nonempty_coordinate_list_initializes_the_next_pointer)
 {
+    // Arrange.
     Coordinates* coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
     CoordinateNode* node = CoordinateNode__create(coords);
     CoordinateList* list = CoordinateList__create(node);
@@ -147,10 +172,12 @@ TEST(CoordinateTestSuite, test_adding_node_to_nonempty_coordinate_list_initializ
     Coordinates* new_coords = Coordinates__create(TEST_X2_COORD, TEST_Y2_COORD, TEST_Z2_COORD);
     CoordinateNode* new_node = CoordinateNode__create(new_coords);
 
+    // Act.
     CoordinateList__add_node(list, new_node);
 
     const CoordinateNode* next_node = list->head->next;
 
+    // Assert.
     EXPECT_EQ(list->head, node);
     EXPECT_EQ(list->len, 2);
     EXPECT_NE(list->head->next, nullptr);
@@ -166,6 +193,7 @@ TEST(CoordinateTestSuite, test_adding_node_to_nonempty_coordinate_list_initializ
 // test deleting node with list of more than one element
 TEST(CoordinateTestSuite, test_deleting_node_with_list_of_more_than_one_element_only_deletes_the_node)
 {
+    // Arrange.
     Coordinates* coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
     CoordinateNode* node = CoordinateNode__create(coords);
     CoordinateList* list = CoordinateList__create(node);
@@ -179,8 +207,10 @@ TEST(CoordinateTestSuite, test_deleting_node_with_list_of_more_than_one_element_
     CoordinateList__add_node(list, node2);
     CoordinateList__add_node(list, node3);
 
+    // Act.
     CoordinateList__delete_node(list, node2);
 
+    // Assert.
     EXPECT_EQ(list->head, node);
     EXPECT_EQ(list->len, 2);
     EXPECT_NE(list->head->next, nullptr);
@@ -190,6 +220,7 @@ TEST(CoordinateTestSuite, test_deleting_node_with_list_of_more_than_one_element_
 
 TEST(CoordinateTestSuite, test_deleting_node_via_coordinates_with_list_of_more_than_one_element_only_deletes_the_node)
 {
+    // Arrange.
     Coordinates* coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
     CoordinateNode* node = CoordinateNode__create(coords);
     CoordinateList* list = CoordinateList__create(node);
@@ -203,8 +234,10 @@ TEST(CoordinateTestSuite, test_deleting_node_via_coordinates_with_list_of_more_t
     CoordinateList__add_node(list, node2);
     CoordinateList__add_node(list, node3);
 
+    // Act.
     CoordinateList__delete_node_with_coordinate_value(list, coords2);
 
+    // Assert.
     EXPECT_EQ(list->head, node);
     EXPECT_EQ(list->len, 2);
     EXPECT_NE(list->head->next, nullptr);
@@ -215,13 +248,15 @@ TEST(CoordinateTestSuite, test_deleting_node_via_coordinates_with_list_of_more_t
 // test deleting node with list of one element
 TEST(CoordinateTestSuite, test_deleting_node_with_list_of_one_element_only_deletes_the_node)
 {
+    // Arrange.
     Coordinates* coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
     CoordinateNode* node = CoordinateNode__create(coords);
     CoordinateList* list = CoordinateList__create(node);
 
-
+    // Act.
     CoordinateList__delete_node(list, node);
 
+    // Assert.
     EXPECT_NE(list, nullptr);
     EXPECT_EQ(list->head, nullptr);
     EXPECT_EQ(list->len, 0);
@@ -233,6 +268,7 @@ TEST(CoordinateTestSuite, test_deleting_node_with_list_of_one_element_only_delet
 // test accessing node with index i < len
 TEST(CoordinateTestSuite, test_indexing_into_list_gets_the_right_node)
 {
+    // Arrange.
     Coordinates* coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
     CoordinateNode* node = CoordinateNode__create(coords);
     CoordinateList* list = CoordinateList__create(node);
@@ -246,8 +282,10 @@ TEST(CoordinateTestSuite, test_indexing_into_list_gets_the_right_node)
     CoordinateList__add_node(list, node2);
     CoordinateList__add_node(list, node3);
 
+    // Act.
     CoordinateNode* popped_node = CoordinateList__retrieve_node_from_index(list, 2);
 
+    // Assert.
     EXPECT_EQ(popped_node->c->x, TEST_X2_COORD);
     EXPECT_EQ(popped_node->c->y, TEST_Y2_COORD);
     EXPECT_EQ(popped_node->c->z, TEST_Z2_COORD);
@@ -255,6 +293,7 @@ TEST(CoordinateTestSuite, test_indexing_into_list_gets_the_right_node)
 // test accessing node with index i >= len
 TEST(CoordinateTestSuite, test_indexing_out_of_bounds_into_list_gets_null)
 {
+    // Arrange.
     Coordinates* coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
     CoordinateNode* node = CoordinateNode__create(coords);
     CoordinateList* list = CoordinateList__create(node);
@@ -268,8 +307,10 @@ TEST(CoordinateTestSuite, test_indexing_out_of_bounds_into_list_gets_null)
     CoordinateList__add_node(list, node2);
     CoordinateList__add_node(list, node3);
 
+    // Act.
     CoordinateNode* accessed_node = CoordinateList__retrieve_node_from_index(list, 4);
 
+    // Assert.
     EXPECT_EQ(accessed_node, nullptr);
 
 }
@@ -277,6 +318,7 @@ TEST(CoordinateTestSuite, test_indexing_out_of_bounds_into_list_gets_null)
 // test popping off node in list of more than one element
 TEST(CoordinateTestSuite, test_popping_node_off_list_with_more_than_one_element_returns_node)
 {
+    // Arrange.
     Coordinates* coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
     CoordinateNode* node = CoordinateNode__create(coords);
     CoordinateList* list = CoordinateList__create(node);
@@ -290,8 +332,10 @@ TEST(CoordinateTestSuite, test_popping_node_off_list_with_more_than_one_element_
     CoordinateList__add_node(list, node2);
     CoordinateList__add_node(list, node3);
 
+    // Act.
     CoordinateNode* popped_node = CoordinateList__pop_front(list);
 
+    // Assert.
     EXPECT_EQ(popped_node, node);
     EXPECT_EQ(popped_node->c, node->c);
     EXPECT_EQ(popped_node->next, nullptr);
@@ -302,12 +346,16 @@ TEST(CoordinateTestSuite, test_popping_node_off_list_with_more_than_one_element_
 // test popping off node in list of one element
 TEST(CoordinateTestSuite, test_popping_node_off_list_with_one_element_returns_node)
 {
+    // Arrange.
     Coordinates* coords = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
     CoordinateNode* node = CoordinateNode__create(coords);
     CoordinateList* list = CoordinateList__create(node);
 
+    // Act.
     CoordinateNode* popped_node = CoordinateList__pop_front(list);
 
+    // Assert.
+    EXPECT_NE(list, nullptr);
     EXPECT_EQ(popped_node, node);
     EXPECT_EQ(popped_node->c, node->c);
     EXPECT_NE(list->head, node);
