@@ -37,7 +37,7 @@ void Board__init(Board* board, char repr, char* board_repr[BOARD_SIZE][BOARD_SIZ
 				if(board_repr[x][y][z] == repr){
 					Coordinates* coordinates = Coordinates__create(x, y, z);
 					Board__set(board, coordinates);
-					Coordinates__destroy(coordinates);
+					Coordinates__destroy(&coordinates);
 				}
 			}
 		}

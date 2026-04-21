@@ -13,12 +13,18 @@ char* table_name = "moves";
 char* exists_cmd = "SELECT EXISTS (SELECT * FROM %s M WHERE M.piece = '%c' AND M.x0 = %i AND M.y0 = %i AND M.z0 = %i AND M.x1 = %i AND M.y1 = %i AND M.z1 = %i)";
 
 
-int open_db(){
+int open_db(bool isTesting){
 	/*
 	 * Opens the database.
 	 */
 	int exit = 0;
-	exit = sqlite3_open(DB_PATH, &DB);
+	if (isTesting)
+	{
+		exit = sqlite3_open(TEST_DB_PATH, &DB);
+	}else
+	{
+		exit = sqlite3_open(DB_PATH, &DB);
+	}
 	return exit;
 }
 
@@ -32,7 +38,7 @@ int exists_callback(void* data, int argc, char** argv, char** azColName){
 
 int moves_callback(void* datum, int count, char** data, char** columns)
 {
-	
+
 	return 0;
 }
 
@@ -56,7 +62,7 @@ bool is_move_valid(char piece, Coordinates* start, Coordinates* end){
 	sqlite3_exec(DB, exists_cmd_populated, exists_callback, &found, &err_msg);
 	return found;
 }
-CoordinateList get_valid_moves(char piece, Coordinates* xyz){
+CoordinateList* get_valid_moves(char piece, Coordinates* xyz){
 	/*
 	 * Retrieve the valid moves for a given piece.
 	 *
@@ -74,7 +80,7 @@ CoordinateList get_valid_moves(char piece, Coordinates* xyz){
 	char *exists_cmd_populated=malloc(exists_cmd_length * sizeof(char));
 	sprintf(exists_cmd_populated, exists_cmd, table_name, piece, xyz->x, xyz->y, xyz->z);
 	sqlite3_exec(DB, exists_cmd_populated, exists_callback, &found, &err_msg);
-	return NULL;
+	return (CoordinateList*)NULL;
 }
 
 void log_move(){

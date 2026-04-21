@@ -34,10 +34,10 @@ TEST(CoordinateTestSuite, test_coordinate_deletion_frees_the_memory)
 
     EXPECT_TRUE(returned_coords != nullptr);
     // Act.
-    Coordinates__destroy(returned_coords);
+    Coordinates__destroy(&returned_coords);
 
     // Assert.
-    EXPECT_TRUE(returned_coords == nullptr);
+    EXPECT_EQ(returned_coords, nullptr);
 }
 
 TEST(CoordinateTestSuite, test_null_coordinate_deletion_does_nothing)
@@ -46,7 +46,7 @@ TEST(CoordinateTestSuite, test_null_coordinate_deletion_does_nothing)
     Coordinates* returned_coords = nullptr;
 
     // Act.
-    Coordinates__destroy(returned_coords);
+    Coordinates__destroy(&returned_coords);
 
     // Assert.
     EXPECT_TRUE(returned_coords == nullptr);
@@ -95,7 +95,7 @@ TEST(CoordinateTestSuite, test_coordinate_node_deletion_frees_the_memory)
     EXPECT_EQ(node->c->z, TEST_Z_COORD);
 
     // Act.
-    CoordinateNode__destroy(node);
+    CoordinateNode__destroy(&node);
 
     // Assert.
     EXPECT_EQ(node, nullptr);
@@ -134,7 +134,7 @@ TEST(CoordinateTestSuite, test_coordinate_list_deletion_frees_the_memory)
     EXPECT_EQ(list->head->c->z, TEST_Z_COORD);
 
     // Act.
-    CoordinateList__destroy(list);
+    CoordinateList__destroy(&list);
 
     // Assert.
     EXPECT_EQ(list, nullptr);
@@ -215,7 +215,8 @@ TEST(CoordinateTestSuite, test_deleting_node_with_list_of_more_than_one_element_
     EXPECT_EQ(list->len, 2);
     EXPECT_NE(list->head->next, nullptr);
     EXPECT_EQ(list->head->next, node3);
-    EXPECT_EQ(node2, nullptr);
+    EXPECT_EQ(node2->c, nullptr);
+    EXPECT_EQ(node2->next, nullptr);
 }
 
 TEST(CoordinateTestSuite, test_deleting_node_via_coordinates_with_list_of_more_than_one_element_only_deletes_the_node)
@@ -242,7 +243,6 @@ TEST(CoordinateTestSuite, test_deleting_node_via_coordinates_with_list_of_more_t
     EXPECT_EQ(list->len, 2);
     EXPECT_NE(list->head->next, nullptr);
     EXPECT_EQ(list->head->next, node3);
-    EXPECT_EQ(node2, nullptr);
 }
 
 // test deleting node with list of one element
@@ -260,7 +260,6 @@ TEST(CoordinateTestSuite, test_deleting_node_with_list_of_one_element_only_delet
     EXPECT_NE(list, nullptr);
     EXPECT_EQ(list->head, nullptr);
     EXPECT_EQ(list->len, 0);
-    EXPECT_NE(list->head->next, nullptr);
 }
 
 
@@ -283,7 +282,7 @@ TEST(CoordinateTestSuite, test_indexing_into_list_gets_the_right_node)
     CoordinateList__add_node(list, node3);
 
     // Act.
-    CoordinateNode* popped_node = CoordinateList__retrieve_node_from_index(list, 2);
+    CoordinateNode* popped_node = CoordinateList__retrieve_node_from_index(list, 1);
 
     // Assert.
     EXPECT_EQ(popped_node->c->x, TEST_X2_COORD);
