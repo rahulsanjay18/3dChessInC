@@ -22,7 +22,8 @@ typedef struct Board{
     char representing_character;
 } Board;
 
-Board* Board__create(char repr, char* board_repr[BOARD_SIZE][BOARD_SIZE]);
+Board* Board__create(char repr, const char* board_repr);
+void Board__destroy(Board** board);
 
 /*
  * Given the board and coordinates, set the bit at the location (x,y,z) to 1.
