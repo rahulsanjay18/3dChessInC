@@ -130,15 +130,15 @@ TEST(BoardGroupTestSuite, test_read_from_board_group_returns_correct_char)
     // Arrange.
     const auto board_repr = static_cast<char*>(calloc(BOARD_SIZE * BOARD_SIZE * BOARD_SIZE, sizeof(char)));
     constexpr int offset1 = TEST_X_COORD * X_DIM_OFFSET + TEST_Y_COORD * Y_DIM_OFFSET + TEST_Z_COORD;
-    constexpr int offset2 = TEST_X2_COORD * X_DIM_OFFSET + TEST_Y2_COORD * Y_DIM_OFFSET + TEST_Z2_COORD;
     board_repr[offset1] = REPRESENTING_CHARACTER;
-    board_repr[offset2] = REPRESENTING_CHARACTER;
     Boards * boards = Boards__create(board_repr);
 
     // Act.
     char piece = Boards__get_piece(boards, Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD));
+    char piece2 = Boards__get_piece(boards, Coordinates__create(TEST_X2_COORD, TEST_Y2_COORD, TEST_Z2_COORD));
 
     // Assert.
     EXPECT_EQ(piece, REPRESENTING_CHARACTER);
+    EXPECT_EQ(piece2, '\0');
 
 }
