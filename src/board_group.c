@@ -3,7 +3,7 @@
 #include "board.h"
 #include "board_group.h"
 
-void Boards__init(Boards* boards, char* board_repr[BOARD_SIZE][BOARD_SIZE]){
+void Boards__init(Boards* boards, const char* board_repr){
 	if (!boards)
 	{
 		return;
@@ -15,10 +15,18 @@ void Boards__init(Boards* boards, char* board_repr[BOARD_SIZE][BOARD_SIZE]){
 	}
 }
 
-Boards* Boards__create(char* board_repr[BOARD_SIZE][BOARD_SIZE]){
+Boards* Boards__create(const char* board_repr){
 	Boards* result = (Boards*) malloc(sizeof(Boards));
 	Boards__init(result, board_repr);
 	return result;
+}
+
+void Boards__destroy(Boards** boards)
+{
+	if (!*boards) return;
+	free(*boards);
+	*boards = NULL;
+
 }
 
 void Boards__set_piece(Boards* boards, const char piece, const Coordinates* coordinates){
@@ -39,6 +47,17 @@ void Boards__unset_piece(Boards* boards, const char piece, const Coordinates* co
 	const int index = char_to_int(piece);
 	Board* board = boards->full_board[index];
 	Board__unset(board, coordinates);
+}
+
+void Boards__unset(Boards* boards, const Coordinates* coordinates){
+	if (!boards)
+	{
+		return;
+	}
+	for(int i = 0; i < SIZE_OF_CHARACTER_MAP; i++)
+	{	Board* board = boards->full_board[i];
+		Board__unset(board, coordinates);
+	}
 }
 
 char Boards__get_piece(Boards* boards, const Coordinates* coordinates){

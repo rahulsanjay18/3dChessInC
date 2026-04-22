@@ -10,8 +10,10 @@ typedef struct Boards{
     Board* full_board[SIZE_OF_CHARACTER_MAP];
 } Boards;
 
-Boards* Boards__create(char* board_repr[BOARD_SIZE][BOARD_SIZE]);
+Boards* Boards__create(const char* board_repr);
+void Boards__destroy(Boards** boards);
 void Boards__set_piece(Boards* boards, char piece, const Coordinates* coordinates);
 void Boards__unset_piece(Boards* boards, char piece, const Coordinates* coordinates);
+void Boards__unset(Boards* boards, const Coordinates* coordinates);
 char Boards__get_piece(Boards* boards, const Coordinates* coordinates);
 #endif

@@ -4,6 +4,7 @@
 extern "C" {
 #include "coordinates.h"
 #include <stdio.h>
+#include "constants.h"
 }
 #include "gtest/gtest.h"
 
