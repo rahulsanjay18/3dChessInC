@@ -8,6 +8,6 @@
 
 void save_file(GameState* game_state, const char* filepath);
 
-GameState* load_file(char* filepath);
+GameState* load_file(const char* filepath);
 
 #endif //CUBECHESS_SAVE_FILE_H

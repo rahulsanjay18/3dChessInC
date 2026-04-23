@@ -38,7 +38,7 @@ int exists_callback(void* data, int argc, char** argv, char** azColName){
 	return 1;
 }
 
-int char_to_int(char c)
+int char_to_int(const char c)
 {
 	return c - '0';
 }

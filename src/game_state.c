@@ -5,23 +5,24 @@
 #include "game_state.h"
 #include "sql_driver.h"
 
-void GameState__init(GameState* game_state, const char* board_repr, bool is_white_turn, const bool castle_status[CASTLES], const bool is_checkmate, const bool is_check, bool isTesting){
+void GameState__init(GameState* game_state, const char* board_repr, int* captured_pieces, bool is_white_turn, const bool castle_status[CASTLES], const bool is_checkmate, const bool is_check, bool isTesting){
 	if (!game_state)
 	{
 		return;
 	}
 	open_db(isTesting);
 	game_state->boards = Boards__create(board_repr);
+	game_state->captured_pieces = captured_pieces;
 	game_state->is_white_turn = is_white_turn;
 	*(game_state->castle_status) = castle_status;
 	game_state->is_check = is_check;
 	game_state->is_checkmate = is_checkmate;
 }
-GameState* GameState__create(const char* board_repr, bool is_white_turn, const bool castle_status[CASTLES], bool is_checkmate, bool is_check, bool isTesting)
+GameState* GameState__create(const char* board_repr, int* captured_pieces, bool is_white_turn, const bool castle_status[CASTLES], bool is_checkmate, bool is_check, bool isTesting)
 {
 	GameState* result = (GameState*) malloc(sizeof(GameState));
 	
-	GameState__init(result, board_repr, is_white_turn, castle_status, is_checkmate, is_check, isTesting);
+	GameState__init(result, board_repr, captured_pieces, is_white_turn, castle_status, is_checkmate, is_check, isTesting);
 	return result;
 }
 

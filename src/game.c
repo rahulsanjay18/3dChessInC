@@ -2,15 +2,23 @@
 #include "game_state.h"
 #include "game.h"
 
+#include <stdio.h>
+
+#include "save_file.h"
 #include "sql_driver.h"
 
+char* DEFAULT_FILEPATH = "game_start.txt";
 
 void Game__init(Game* game, char* filepath, bool isTesting){
+	if (!game || !filepath)
+	{
+		return;
+	}
 	// load file contents
 	// parse out game state
-	// create game state obj
-	// validate game_state?
-	// set other variables
+	game->game_state = *load_file(filepath);
+	game->piece_to_move = '\0';
+	open_db(isTesting);
 }
 Game* Game__create(char* filepath, bool isTesting){
 	Game* game = (Game*) malloc(sizeof(Game));
@@ -20,7 +28,7 @@ Game* Game__create(char* filepath, bool isTesting){
 	Game__init(game, filepath, isTesting);
 	return game;
 }
-bool Game__move(Game* game, Coordinates* start, Coordinates* end){
+bool Game__move(Game* game, const Coordinates* start, const Coordinates* end){
 	return make_move_with_coords(&game->game_state, start, end);
 }
 
@@ -30,6 +38,29 @@ bool Game__move_with_piece(const Game* game, const char piece, const Coordinates
 }
 
 void Game__loop(Game* game){
+	while (!game->game_state.is_checkmate)
+	{
+		while (game->start_move != NULL && game->end_move != NULL)
+		{
+			bool move_success = false;
+			if (game->piece_to_move != '\0')
+			{
+				move_success = Game__move_with_piece(game, game->piece_to_move, game->start_move, game->end_move);
+			}else
+			{
+				move_success = Game__move(game, game->start_move, game->end_move);
+			}
+			if (!move_success)
+			{
+				printf("Move failed.");
+				continue;
+			}
+			// check for checks and mate
+
+
+			game->game_state.is_white_turn = !game->game_state.is_white_turn;
+		}
+	}
 	// while game is running
 	// while move has value
 	// copy move into new variable
