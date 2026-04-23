@@ -122,6 +122,21 @@ void save_file(GameState* game_state, const char* filepath)
 
 }
 
+char* parse_board_string(const char* board_string)
+{
+    return NULL;
+}
+
+char* parse_captured_piece_string(const char* captured_piece_string)
+{
+    return NULL;
+}
+
+char* parse_castle_string(const char* castle_string)
+{
+    return NULL;
+}
+
 GameState* load_file(char* filepath)
 {
     return (GameState*) NULL;
