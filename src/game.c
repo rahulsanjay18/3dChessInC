@@ -2,29 +2,33 @@
 #include "game_state.h"
 #include "game.h"
 
+#include "sql_driver.h"
 
-char * DEFAULT_FILEPATH = "initial_save_file.bin";
 
-void Game__init(Game* game, char* filepath){
+void Game__init(Game* game, char* filepath, bool isTesting){
 	// load file contents
 	// parse out game state
 	// create game state obj
 	// validate game_state?
 	// set other variables
 }
-Game* Game__create(char* filepath){
+Game* Game__create(char* filepath, bool isTesting){
 	Game* game = (Game*) malloc(sizeof(Game));
 	if(filepath == NULL){
 		filepath = DEFAULT_FILEPATH;
 	}
-	Game__init(game, filepath);
+	Game__init(game, filepath, isTesting);
 	return game;
 }
 bool Game__move(Game* game, Coordinates* start, Coordinates* end){
-	// check if move is valid?
-	// make move?
-	return false;
+	return make_move_with_coords(&game->game_state, start, end);
 }
+
+bool Game__move_with_piece(const Game* game, const char piece, const Coordinates* start, const Coordinates* end)
+{
+	return make_move_with_piece(&game->game_state, piece, start, end);
+}
+
 void Game__loop(Game* game){
 	// while game is running
 	// while move has value
@@ -46,8 +50,4 @@ void Game__loop(Game* game){
 	//	if so, check valid moves in checkmate
 	//	if none, then end game
 	//	then, repeat while
-}
-void Game__save(Game* game, char* filepath){
-	// save game state and anything else
-	// maybe also save moves
 }

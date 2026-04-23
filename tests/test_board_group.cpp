@@ -66,7 +66,7 @@ TEST(BoardGroupTestSuite, test_board_group_set_writes_bit)
     const auto board_repr = static_cast<char*>(calloc(BOARD_SIZE * BOARD_SIZE * BOARD_SIZE, sizeof(char)));
     Boards * boards = Boards__create(board_repr);
     Coordinates* coordinates = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
-    int piece_index = char_to_int(REPRESENTING_CHARACTER);
+    int piece_index = piece_char_to_int(REPRESENTING_CHARACTER);
 
     // Act.
     Boards__set_piece(boards, REPRESENTING_CHARACTER,coordinates);
@@ -88,7 +88,7 @@ TEST(BoardGroupTestSuite, test_unset_specific_piece_board_in_group_sets_value_to
     board_repr[offset2] = REPRESENTING_CHARACTER;
     Boards * boards = Boards__create(board_repr);
     Coordinates* coordinates = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
-    int piece_index = char_to_int(REPRESENTING_CHARACTER);
+    int piece_index = piece_char_to_int(REPRESENTING_CHARACTER);
     bool is_piece_set = Board__get(boards->full_board[piece_index], coordinates);
     EXPECT_TRUE(is_piece_set);
 
@@ -111,7 +111,7 @@ TEST(BoardGroupTestSuite, test_unset_piece_board_in_group_sets_value_to_zero)
     board_repr[offset2] = REPRESENTING_CHARACTER;
     Boards * boards = Boards__create(board_repr);
     Coordinates* coordinates = Coordinates__create(TEST_X_COORD, TEST_Y_COORD, TEST_Z_COORD);
-    int piece_index = char_to_int(REPRESENTING_CHARACTER);
+    int piece_index = piece_char_to_int(REPRESENTING_CHARACTER);
     bool is_piece_set = Board__get(boards->full_board[piece_index], coordinates);
     EXPECT_TRUE(is_piece_set);
 

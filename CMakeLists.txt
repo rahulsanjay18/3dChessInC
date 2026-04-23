@@ -11,11 +11,15 @@ file(GLOB C_FILES CONFIGURE_DEPENDS "src/*.c")
 file(GLOB H_FILES CONFIGURE_DEPENDS "include/*.h")
 
 # 2. Build the Static Library (Fixed name to match project)
-add_library(${PROJECT_NAME} STATIC ${C_FILES} ${H_FILES})
+add_library(${PROJECT_NAME} STATIC ${C_FILES} ${H_FILES}
+        src/save_file.c
+        src/save_file.h)
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 # 3. Build the Executable
-add_executable(${PROJECT_NAME}_exec "main.c" ${C_FILES})
+add_executable(${PROJECT_NAME}_exec "main.c" ${C_FILES}
+        src/save_file.c
+        src/save_file.h)
 target_include_directories(${PROJECT_NAME}_exec PRIVATE include)
 
 # 4. Build GoogleTest Executable

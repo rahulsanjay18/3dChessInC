@@ -8,17 +8,16 @@
 struct Boards;
 
 typedef struct GameState{
-	char board_representation[BOARD_SIZE][BOARD_SIZE][BOARD_SIZE];
 	Boards* boards;
 	int captured_pieces[SIZE_OF_CHARACTER_MAP];
 	bool is_white_turn;
 	bool castle_status[CASTLES];
 	bool is_checkmate;
+	bool is_check;
 }GameState;
 
-GameState* GameState__create(char* board_repr[BOARD_SIZE][BOARD_SIZE], bool is_white_turn, bool castle_status[CASTLES], bool is_checkmate);
-void make_move(GameState* game_state, const Coordinates* start, Coordinates* end);
-void pretty_print_board(GameState* game_state, char* board[BOARD_SIZE][BOARD_SIZE]);
-int get_piece_num(GameState* game_state, Coordinates* location);
-char get_piece_char(GameState* game_state, Coordinates* location);
+GameState* GameState__create(const char* board_repr,bool is_white_turn, const bool castle_status[CASTLES], bool is_checkmate, bool is_check, bool isTesting);
+bool make_move_with_coords(GameState* game_state, const Coordinates* start, const Coordinates* end);
+bool make_move_with_piece(const GameState* game_state, char piece, const Coordinates* start, const Coordinates* end);
+char get_piece_char(const GameState* game_state, const Coordinates* location);
 #endif

@@ -34,7 +34,7 @@ void Boards__set_piece(Boards* boards, const char piece, const Coordinates* coor
 	{
 		return;
 	}
-	const int index = char_to_int(piece);
+	const int index = piece_char_to_int(piece);
 	Board* board = boards->full_board[index];
 	Board__set(board, coordinates);
 }
@@ -44,7 +44,7 @@ void Boards__unset_piece(Boards* boards, const char piece, const Coordinates* co
 	{
 		return;
 	}
-	const int index = char_to_int(piece);
+	const int index = piece_char_to_int(piece);
 	Board* board = boards->full_board[index];
 	Board__unset(board, coordinates);
 }
@@ -71,4 +71,14 @@ char Boards__get_piece(Boards* boards, const Coordinates* coordinates){
 		}
 	}
 	return '\0';
+}
+
+bool Boards__check_piece_exists(Boards* boards, const char piece, const Coordinates* coordinates){
+	if (!boards)
+	{
+		return '\0';
+	}
+	const int index = piece_char_to_int(piece);
+
+	return Board__get(boards->full_board[index], coordinates);
 }

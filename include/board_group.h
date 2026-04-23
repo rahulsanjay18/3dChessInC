@@ -16,4 +16,5 @@ void Boards__set_piece(Boards* boards, char piece, const Coordinates* coordinate
 void Boards__unset_piece(Boards* boards, char piece, const Coordinates* coordinates);
 void Boards__unset(Boards* boards, const Coordinates* coordinates);
 char Boards__get_piece(Boards* boards, const Coordinates* coordinates);
+bool Boards__check_piece_exists(Boards* boards, char piece, const Coordinates* coordinates);
 #endif
