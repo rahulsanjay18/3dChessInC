@@ -9,6 +9,7 @@ struct Boards;
 
 typedef struct GameState{
 	Boards* boards;
+	CoordinateList* check_list;
 	int* captured_pieces;
 	bool is_white_turn;
 	bool castle_status[CASTLES];

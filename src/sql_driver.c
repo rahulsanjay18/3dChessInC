@@ -96,6 +96,7 @@ CoordinateList* get_valid_moves(char piece, const Coordinates* xyz){
 	return list;
 }
 
+
 int close_db(){
 	/*
 	 * Closes database

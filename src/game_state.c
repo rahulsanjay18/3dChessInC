@@ -12,6 +12,7 @@ void GameState__init(GameState* game_state, const char* board_repr, int* capture
 	}
 	open_db(isTesting);
 	game_state->boards = Boards__create(board_repr);
+	game_state->check_list = NULL;
 	game_state->captured_pieces = captured_pieces;
 	game_state->is_white_turn = is_white_turn;
 	*(game_state->castle_status) = castle_status;
@@ -29,12 +30,13 @@ GameState* GameState__create(const char* board_repr, int* captured_pieces, bool 
 bool make_move(Boards* boards, const char piece, const Coordinates* start, const Coordinates* end)
 {
 
+	// if in check, see if moves are in the check list
 	bool is_valid = is_move_valid(piece, start, end);
 	if (!is_valid) return false;
-
+	// check if move creates a check on its own king
 	Boards__unset_piece(boards, piece, start);
 	Boards__set_piece(boards, piece, end);
-
+	// check if in check or mate
 	return true;
 }
 
@@ -63,4 +65,19 @@ char get_piece_char(const GameState* game_state, const Coordinates* location)
 {
 	const char piece = Boards__get_piece(game_state->boards, location);
 	return piece;
+}
+
+void is_board_in_check_or_mate(GameState* game_state, char piece, const Coordinates* start, const Coordinates* end)
+{
+	// get valid moves for the piece that moved
+	// see if it intersects with the opposite king's position
+	// check if straight pieces have discovered check
+	// this is done by finding the locations of all existing straight pieces,
+	// then do is_move_valid(piece, loc, start) && is_move_valid(piece, loc, opp_king_loc)
+	// then check for if opposite pieces can get in the way
+	// store possible moves in list
+	// if all false, return false
+	// if true, check for mate
+	// get all opposite king moves
+	// see if pieces intersect with that
 }
