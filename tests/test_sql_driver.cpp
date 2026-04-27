@@ -37,7 +37,7 @@ TEST(SQLDriverTestSuite, test_get_valid_moves)
 {
     open_db(true);
     Coordinates* xyz = Coordinates__create(0, 0, 0);
-    const CoordinateList* list = get_valid_moves('r', xyz);
+    const CoordinateList* list = get_possible_moves('r', xyz);
 
     for (int i = 0; i < res->len; i++)
     {

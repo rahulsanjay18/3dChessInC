@@ -8,7 +8,7 @@
 
 int open_db(bool isTesting);
 bool is_move_valid(char piece, const Coordinates* start, const Coordinates* end);
-CoordinateList* get_valid_moves(char piece, const Coordinates* xyz);
+CoordinateList* get_possible_moves(char piece, const Coordinates* xyz);
 void log_move();
 int close_db();
 #endif

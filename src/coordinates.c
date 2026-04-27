@@ -1,5 +1,8 @@
 #include <stdlib.h>
 #include "coordinates.h"
+
+#include <stdbool.h>
+
 void Coordinates__init(Coordinates* self, const int x, const int y, const int z){
 	if (!self)
 	{
@@ -43,6 +46,11 @@ void Coordinates__destroy(Coordinates** coordinates){
 	*coordinates=NULL;
 }
 
+bool Coordinates__compare_values(const Coordinates* c1, const Coordinates* c2)
+{
+	return c1->x == c2->x && c1->y == c2->y && c1->z == c2->z;
+}
+
 void CoordinateNode__init(CoordinateNode* result, Coordinates* c)
 {
 	if (!result)
@@ -70,6 +78,11 @@ void CoordinateNode__destroy(CoordinateNode** c)
 	if (!*c)return;
 	free(*(c));
 	*c=NULL;
+}
+
+bool CoordinateNode__compare_values(const CoordinateNode* node1, const CoordinateNode* node2)
+{
+	return Coordinates__compare_values(node1->c, node2->c);
 }
 
 void CoordinateList__init(CoordinateList* result, CoordinateNode* node)
@@ -108,6 +121,7 @@ void CoordinateList__destroy(CoordinateList** list)
 
 void CoordinateList__add_node(CoordinateList* list, CoordinateNode* node)
 {
+	if (!list) return;
 	CoordinateNode* item = list->head;
 	if (list->head == NULL)
 	{
@@ -192,4 +206,23 @@ CoordinateNode* CoordinateList__pop_front(CoordinateList* list)
 		list->len--;
 	}
 	return node;
+}
+
+CoordinateList* CoordinateList__compute_intersection(const CoordinateList* list1, const CoordinateList* list2)
+{
+	CoordinateList* result = CoordinateList__create(NULL);
+	for (int i = 0; i < list1->len; i++)
+	{
+		for (int j = i; j < list2->len; j++)
+		{
+			CoordinateNode* node = CoordinateList__retrieve_node_from_index(list1, i);
+			CoordinateNode* node2 = CoordinateList__retrieve_node_from_index(list2, j);
+			if (CoordinateNode__compare_values(node, node2))
+			{
+				CoordinateNode* common_element = CoordinateNode__create(node->c);
+				CoordinateList__add_node(result, common_element);
+			}
+		}
+	}
+	return result;
 }

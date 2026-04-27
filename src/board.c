@@ -91,3 +91,51 @@ bool Board__get(Board* self, const Coordinates* location){
 	unsigned int z = location->z;
 	return (bool)((self->bitboard[location->x] & get_yz_integer(y, z)) >> get_bit_shifted_value(y, z));
 }
+
+Coordinates* Board__get_first_instance(const Board* board)
+{
+	int index = -1;
+	int x = 0;
+	for (x = 0; x < BOARD_SIZE; x++)
+	{
+		if (board->bitboard[x] == 0) continue;
+		uint64_t plane = (board->bitboard[x]);
+		index = 0;
+		while (plane != 1)
+		{
+			plane = plane >> 1;
+			index++;
+		}
+		break;
+	}
+	int y = index / BOARD_SIZE;
+	int z = index % BOARD_SIZE;
+	return Coordinates__create(x, y, z);
+}
+
+CoordinateList* Board__get_all_instances(const Board* board)
+{
+	CoordinateList* list = CoordinateList__create(NULL);
+	int index = 0;
+	int x = 0;
+	int y = 0;
+	int z = 0;
+	for (x = 0; x < BOARD_SIZE; x++)
+	{
+		if (board->bitboard[x] == 0) continue;
+		uint64_t plane = (board->bitboard[x]);
+		index = 0;
+		while (plane != 1)
+		{
+			plane = plane >> 1;
+			index++;
+		}
+		y = index / BOARD_SIZE;
+		z = index % BOARD_SIZE;
+		Coordinates* coordinates = Coordinates__create(x, y, z);
+		CoordinateNode* node = CoordinateNode__create(coordinates);
+		CoordinateList__add_node(list, node);
+	}
+
+	return list;
+}

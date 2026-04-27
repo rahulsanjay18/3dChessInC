@@ -43,4 +43,6 @@ void Board__unset(Board* self, const Coordinates* location);
  * Return the value at the given position on the board.
  */
 bool Board__get(Board* self, const Coordinates* location);
+Coordinates* Board__get_first_instance(const Board* board);
+CoordinateList* Board__get_all_instances(const Board* board);
 #endif

@@ -1,6 +1,8 @@
 #ifndef CONST
 #define CONST
 extern const char CHARACTER_MAP[];
+const char WHITE_KING;
+const char BLACK_KING;
 extern const char DB_PATH[];
 extern const char TEST_DB_PATH[];
 int piece_char_to_int(char c);

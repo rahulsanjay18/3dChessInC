@@ -82,3 +82,27 @@ bool Boards__check_piece_exists(Boards* boards, const char piece, const Coordina
 
 	return Board__get(boards->full_board[index], coordinates);
 }
+
+Coordinates* Boards__get_coordinates_first_instance(Boards* boards, const char piece)
+{
+	if (!boards) return NULL;
+	int index = piece_char_to_int(piece);
+
+	Board* board = boards->full_board[index];
+	return Board__get_first_instance(board);
+}
+
+CoordinateList* Boards__get_all_coordinates(Boards* boards, const char piece)
+{
+	if (!boards) return NULL;
+	int index = piece_char_to_int(piece);
+
+	Board* board = boards->full_board[index];
+	return Board__get_all_instances(board);
+}
+
+CoordinateList* Boards__filter_out_impossible_moves(CoordinateList* moves, const char piece, const Coordinates* coordinates)
+{
+
+	return moves;
+}

@@ -75,7 +75,7 @@ bool is_move_valid(char piece, const Coordinates* start, const Coordinates* end)
 	sqlite3_exec(DB, exists_cmd_populated, exists_callback, &found, &err_msg);
 	return found;
 }
-CoordinateList* get_valid_moves(char piece, const Coordinates* xyz){
+CoordinateList* get_possible_moves(char piece, const Coordinates* xyz){
 	/*
 	 * Retrieve the valid moves for a given piece.
 	 *

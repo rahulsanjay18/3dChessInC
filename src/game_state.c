@@ -70,7 +70,13 @@ char get_piece_char(const GameState* game_state, const Coordinates* location)
 void is_board_in_check_or_mate(GameState* game_state, char piece, const Coordinates* start, const Coordinates* end)
 {
 	// get valid moves for the piece that moved
-	// see if it intersects with the opposite king's position
+	CoordinateList* piece_move_list = get_possible_moves(piece, end);
+
+	char opposite_king = game_state->is_white_turn ? BLACK_KING : WHITE_KING;
+	Coordinates* king_coordinates = Boards__get_coordinates_first_instance(game_state->boards, opposite_king);
+	// TODO: note that get coordinates returns all hypothetical moves, not accounting for pieces blocking the moves.
+	CoordinateList* king_moves = get_possible_moves(piece, king_coordinates);
+
 	// check if straight pieces have discovered check
 	// this is done by finding the locations of all existing straight pieces,
 	// then do is_move_valid(piece, loc, start) && is_move_valid(piece, loc, opp_king_loc)
