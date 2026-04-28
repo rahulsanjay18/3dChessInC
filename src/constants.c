@@ -1,8 +1,8 @@
 #include "constants.h"
+#include <stdbool.h>
 const char CHARACTER_MAP[] = "rRtTbBpPdDnNkKqQiIgGwWuU";
-const char STRAIGHT_PIECES[] = "rRtTbBqQ
-const char WHITE_KING = 'k';
-const char BLACK_KING = 'K';
+const char STRAIGHT_PIECES[] = "rRtTbBqQ";
+
 const char DB_PATH[] = "../../db/3DChess.db";
 const char TEST_DB_PATH[] = "../db/3DChess.db";
 int piece_char_to_int(const char c){
@@ -13,4 +13,8 @@ int piece_char_to_int(const char c){
 	}
 
 	return -1;
+}
+bool is_piece_white(const char c)
+{
+	return c <= 'z' && c >= 'a';
 }
