@@ -46,7 +46,7 @@ bool make_move_with_coords(GameState* game_state, const Coordinates* start, cons
 		return false;
 	}
 	Boards* boards = game_state->boards;
-	char piece = Boards__get_piece(boards, start);
+	const char piece = Boards__get_piece(boards, start);
 	if (piece == '\0') return false;
 
 	return make_move(boards, piece, start, end);
@@ -63,8 +63,7 @@ bool make_move_with_piece(const GameState* game_state, const char piece, const C
 
 char get_piece_char(const GameState* game_state, const Coordinates* location)
 {
-	const char piece = Boards__get_piece(game_state->boards, location);
-	return piece;
+	return Boards__get_piece(game_state->boards, location);;
 }
 
 void is_board_in_check_or_mate(GameState* game_state, char piece, const Coordinates* start, const Coordinates* end)
