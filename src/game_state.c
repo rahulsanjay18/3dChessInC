@@ -106,7 +106,7 @@ bool check_path_clear(const GameState* game_state, const char piece, const Coord
 	while (Coordinates__is_equal(current_coordinates, end))
 	{
 		Coordinates__add(vector, current_coordinates);
-		if (Boards__get_piece(game_state->boards, current_coordinates) != '\0') return false;
+		if (!Coordinates__is_equal(current_coordinates, end) && Boards__get_piece(game_state->boards, current_coordinates) != '\0') return false;
 	}
 	return check_square_is_moveable(game_state->boards, piece, end);
 }
@@ -146,6 +146,15 @@ bool is_move_valid(const GameState* game_state,const char piece, const Coordinat
 
 	Coordinates* diff = Coordinates__subtract(start, end);
 	Coordinates* vector = NULL;
+	// the next block covers:
+	// - Rook
+	// - Priest
+	// - Bishop
+	// - Queen
+	// - King
+	// - General
+	// - Wizard
+	// - Duke
 	if (is_face_piece(piece))
 	{
 		vector = get_rook_vector_index(diff);
@@ -162,12 +171,14 @@ bool is_move_valid(const GameState* game_state,const char piece, const Coordinat
 	{
 		return check_path_clear(game_state, piece, start, end, vector);
 	}
+
+	//This if statement covers:
+	// - Knight
+	// - Paladin
+	// - Dragon
 	if (is_knightlike(piece))
 	{
 		return check_square_is_moveable(game_state->boards, piece, end);
 	}
 	return check_pawn_moves(game_state->boards, piece, start, end, vector);
-
-
-
 }
