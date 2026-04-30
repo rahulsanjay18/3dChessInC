@@ -1,5 +1,7 @@
 #ifndef COORDS
 #define COORDS
+#include <stdbool.h>
+
 typedef struct Coordinates{
 	int x;
 	int y;
@@ -19,6 +21,10 @@ typedef struct CoordinateList{
 }CoordinateList;
 Coordinates* Coordinates__create(int x, int y, int z);
 void Coordinates__destroy(Coordinates** coordinates);
+Coordinates* Coordinates__subtract(const Coordinates* c1, const Coordinates* c2);
+Coordinates* Coordinates__add(const Coordinates* c1, const Coordinates* c2);
+bool Coordinates__is_equal(const Coordinates* c1, const Coordinates* c2);
+Coordinates* Coordinates__copy(const Coordinates* c);
 CoordinateNode* CoordinateNode__create(Coordinates* c);
 void CoordinateNode__destroy(CoordinateNode** c);
 CoordinateList* CoordinateList__create(CoordinateNode* node);

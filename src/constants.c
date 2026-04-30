@@ -116,3 +116,55 @@ Coordinates* get_bishop_vector_index(const Coordinates* c)
 
 	return Coordinates__create(vector[0], vector[1], vector[2]);
 }
+
+bool is_face_piece(const char piece)
+{
+	return piece == WHITE_ROOK ||
+		piece == WHITE_QUEEN ||
+			piece == BLACK_QUEEN ||
+				piece == BLACK_ROOK ||
+					piece == BLACK_KING ||
+						piece == WHITE_KING ||
+							piece == WHITE_DUKE ||
+								piece==BLACK_DUKE ||
+									piece == WHITE_GENERAL ||
+										piece == BLACK_GENERAL;
+}
+
+bool is_edge_piece(const char piece)
+{
+	return piece == WHITE_PRIEST ||
+		piece == WHITE_QUEEN ||
+			piece == BLACK_QUEEN ||
+				piece == BLACK_PRIEST ||
+					piece == BLACK_KING ||
+						piece == WHITE_KING||
+							piece == WHITE_DUKE ||
+								piece==BLACK_DUKE||
+									piece==WHITE_WIZARD ||
+										piece==BLACK_WIZARD;
+}
+
+bool is_vertex_piece(const char piece)
+{
+	return piece == WHITE_BISHOP ||
+		piece == WHITE_QUEEN ||
+			piece == BLACK_QUEEN ||
+				piece == BLACK_BISHOP ||
+					piece == BLACK_KING ||
+						piece == WHITE_KING ||
+							piece==WHITE_WIZARD ||
+								piece==BLACK_WIZARD ||
+									piece == WHITE_GENERAL ||
+										piece == BLACK_GENERAL;
+}
+
+bool is_knightlike(const char piece)
+{
+	return piece == WHITE_KNIGHT ||
+		piece == BLACK_KNIGHT ||
+			piece == WHITE_PALADIN ||
+				piece == BLACK_PALADIN ||
+					piece == WHITE_DRAGON ||
+						piece == BLACK_DRAGON;
+}

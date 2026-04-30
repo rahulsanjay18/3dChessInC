@@ -59,4 +59,9 @@ bool is_piece_white(char c);
 bool is_piece_black(char c);
 Coordinates* get_rook_vector_index(const Coordinates* c);
 Coordinates* get_priest_vector_index(const Coordinates* c);
+Coordinates* get_bishop_vector_index(const Coordinates* c);
+bool is_face_piece(char c);
+bool is_edge_piece(char c);
+bool is_vertex_piece(char c);
+bool is_knightlike(char c);
 #endif

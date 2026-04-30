@@ -46,9 +46,24 @@ void Coordinates__destroy(Coordinates** coordinates){
 	*coordinates=NULL;
 }
 
-bool Coordinates__compare_values(const Coordinates* c1, const Coordinates* c2)
+bool Coordinates__is_equal(const Coordinates* c1, const Coordinates* c2)
 {
 	return c1->x == c2->x && c1->y == c2->y && c1->z == c2->z;
+}
+
+Coordinates* Coordinates__add(const Coordinates* c1, const Coordinates* c2)
+{
+	return Coordinates__create(c2->x + c1->x, c2->y + c1->y, c2->z + c1->z);
+}
+
+Coordinates* Coordinates__subtract(const Coordinates* c1, const Coordinates* c2)
+{
+	return Coordinates__create(c2->x - c1->x, c2->y - c1->y, c2->z - c1->z);
+}
+
+Coordinates* Coordinates__copy(const Coordinates* c)
+{
+	return Coordinates__create(c->x, c->y, c->z);
 }
 
 void CoordinateNode__init(CoordinateNode* result, Coordinates* c)
@@ -82,7 +97,7 @@ void CoordinateNode__destroy(CoordinateNode** c)
 
 bool CoordinateNode__compare_values(const CoordinateNode* node1, const CoordinateNode* node2)
 {
-	return Coordinates__compare_values(node1->c, node2->c);
+	return Coordinates__is_equal(node1->c, node2->c);
 }
 
 void CoordinateList__init(CoordinateList* result, CoordinateNode* node)

@@ -55,7 +55,7 @@ int moves_callback(void* list_ptr, int count, char** data, char** columns)
 	return 0;
 }
 
-bool is_move_valid(char piece, const Coordinates* start, const Coordinates* end){
+bool is_move_possible(char piece, const Coordinates* start, const Coordinates* end){
 	/*
 	 * Checks if the move for the given piece is a valid move.
 	 *

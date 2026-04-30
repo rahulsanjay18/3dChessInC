@@ -76,7 +76,7 @@ char Boards__get_piece(Boards* boards, const Coordinates* coordinates){
 bool Boards__check_piece_exists(Boards* boards, const char piece, const Coordinates* coordinates){
 	if (!boards)
 	{
-		return '\0';
+		return false;
 	}
 	const int index = piece_char_to_int(piece);
 
