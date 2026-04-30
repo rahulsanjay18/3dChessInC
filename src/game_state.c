@@ -172,7 +172,7 @@ bool is_move_valid(const GameState* game_state,const char piece, const Coordinat
 		return check_path_clear(game_state, piece, start, end, vector);
 	}
 
-	//This if statement covers:
+	// This if statement covers:
 	// - Knight
 	// - Paladin
 	// - Dragon
@@ -181,4 +181,8 @@ bool is_move_valid(const GameState* game_state,const char piece, const Coordinat
 		return check_square_is_moveable(game_state->boards, piece, end);
 	}
 	return check_pawn_moves(game_state->boards, piece, start, end, vector);
+
+	// TODO: STILL NEED TO ACCOUNT FOR:
+	// - Castling
+	// - En Passant
 }
