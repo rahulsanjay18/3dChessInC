@@ -33,6 +33,14 @@ uint64_t get_offset(const int x, const int y, const int z)
 }
 
 void Board__init(Board* board, const char repr, const char* board_repr){
+	/*
+	 * Initializes the board struct.
+	 *
+	 * Args:
+	 *	board: The board struct to initialize.
+	 *	repr: The piece (represented by a character) that this bitboard represents the locations of
+	 *	board_repr: The board representation of all pieces on the overall board.
+	 */
 	if (!board)
 	{
 		return;
@@ -55,6 +63,18 @@ void Board__init(Board* board, const char repr, const char* board_repr){
 }
 
 Board* Board__create(const char repr, const char* board_repr){
+	/*
+	 * create a bitboard.
+	 *
+	 * Args:
+	 *	repr: the piece this character represents.
+	 *	board_repr: A BOARD_SIZE x BOARD_SIZE x BOARD_SIZE array where each
+	 *	entry represents the piece on the board at that location. The bitboard
+	 *	constructed is only of the piece that repr is supposed to represent.
+	 *
+	 * Returns:
+	 *	Board pointer pointing to the bitboard.
+	 */
 	Board* board = (Board*) malloc(sizeof(Board));
 	Board__init(board, repr, board_repr);
 	return board;
@@ -62,6 +82,12 @@ Board* Board__create(const char repr, const char* board_repr){
 
 void Board__destroy(Board** board)
 {
+	/*
+	 * Delete board and its contents.
+	 *
+	 * Args:
+	 *	board: board to delete.
+	 */
 	if (!*board) return;
 	free(*board);
 	*board = NULL;
@@ -69,6 +95,13 @@ void Board__destroy(Board** board)
 }
 
 void Board__set(Board* self, const Coordinates* location){
+	/*
+	 * Set the location on the board to one.
+	 *
+	 * Args:
+	 *	self: The board whose bit the function will set to one.
+	 *	location: The location that will be set to one.
+	 */
 	// Note that the array index goes in the x direction.
 	uint64_t plane = (self->bitboard[location->x]);
 	uint64_t val = get_yz_integer(location->y, location->z);
@@ -77,12 +110,29 @@ void Board__set(Board* self, const Coordinates* location){
 }
 
 void Board__unset(Board* self, const Coordinates* location){
+	/*
+	 * Set the location on the board to zero.
+	 *
+	 * Args:
+	 *	self: The board whose bit the function will set to zero.
+	 *	location: The location that will be set to zero.
+	 */
 	uint64_t plane = (self->bitboard[location->x]);
 	plane &= !(get_yz_integer(location->y, location->z));
 	self->bitboard[location->x] = plane;
 }
 
 bool Board__get(Board* self, const Coordinates* location){
+	/*
+	 * Get whether the board is set to high at the coordinates.
+	 *
+	 * Args:
+	 *	self: Board object whose location will be checked.
+	 *	location: The xyz coordinates to look at.
+	 *
+	 * Returns:
+	 *	A boolean on whether the board is set to high.
+	 */
 	if (!self)
 	{
 		return NULL;
@@ -94,6 +144,18 @@ bool Board__get(Board* self, const Coordinates* location){
 
 Coordinates* Board__get_first_instance(const Board* board)
 {
+	/*
+	 * Retrieves the first coordinate where the bitboard is set to high.
+	 *	This is the first instance we see the piece. Useful for King moves
+	 *	because there is always only one so it is faster.
+	 *
+	 * Args:
+	 *	board: The bitboard for a specific piece.
+	 *
+	 * Returns:
+	 *	A CoordinateList (linked list of Coordinates) where the piece exists
+	 *	in the overall board.
+	 */
 	int index = -1;
 	int x = 0;
 	for (x = 0; x < BOARD_SIZE; x++)
@@ -115,6 +177,17 @@ Coordinates* Board__get_first_instance(const Board* board)
 
 CoordinateList* Board__get_all_instances(const Board* board)
 {
+	/*
+	 * Retrieves all coordinates where the bitboard is set to high.
+	 *	This is where all instances of the piece are.
+	 *
+	 * Args:
+	 *	board: The bitboard for a specific piece.
+	 *
+	 * Returns:
+	 *	A CoordinateList (linked list of Coordinates) where the piece exists
+	 *	in the overall board.
+	 */
 	CoordinateList* list = CoordinateList__create(NULL);
 	int index = 0;
 	int x = 0;
