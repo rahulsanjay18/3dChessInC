@@ -27,18 +27,7 @@ GameState* GameState__create(const char* board_repr, int* captured_pieces, bool 
 	return result;
 }
 
-bool make_move(Boards* boards, const char piece, const Coordinates* start, const Coordinates* end)
-{
 
-	// if in check, see if moves are in the check list
-	bool is_valid = is_move_possible(piece, start, end);
-	if (!is_valid) return false;
-	// check if move creates a check on its own king
-	Boards__unset_piece(boards, piece, start);
-	Boards__set_piece(boards, piece, end);
-	// check if in check or mate
-	return true;
-}
 
 bool make_move_with_coords(GameState* game_state, const Coordinates* start, const Coordinates* end){
 	if (!game_state)

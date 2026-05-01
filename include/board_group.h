@@ -20,4 +20,5 @@ bool Boards__check_piece_exists(Boards* boards, char piece, const Coordinates* c
 Coordinates* Boards__get_coordinates_first_instance(Boards* boards, char piece);
 CoordinateList* Boards__get_all_coordinates(Boards* boards, char piece);
 bool is_move_valid(Boards* boards,char piece, const Coordinates* start, const Coordinates* end);
+bool make_move(Boards* boards, char piece, const Coordinates* start, const Coordinates* end);
 #endif

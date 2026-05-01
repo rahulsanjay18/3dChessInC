@@ -5,6 +5,14 @@
 #include "sql_driver.h"
 
 void Boards__init(Boards* boards, const char* board_repr){
+	/*
+	 * Initializes elements of the Boards struct.
+	 *
+	 * Args:
+	 *	boards: the struct to populate.
+	 *	board_repr: An array where each entry is the character representation of a piece if it exists.
+	 *		size of (BOARD_SIZE, BOARD_SIZE, BOARD_SIZE).
+	 */
 	if (!boards)
 	{
 		return;
@@ -17,6 +25,15 @@ void Boards__init(Boards* boards, const char* board_repr){
 }
 
 Boards* Boards__create(const char* board_repr){
+	/*
+	 * Creates the board struct.
+	 *
+	 * Args:
+	 *	board_repr: human readable board representation.
+	 *
+	 * Returns:
+	 *	Pointer to Boards struct.
+	 */
 	Boards* result = (Boards*) malloc(sizeof(Boards));
 	Boards__init(result, board_repr);
 	return result;
@@ -24,6 +41,12 @@ Boards* Boards__create(const char* board_repr){
 
 void Boards__destroy(Boards** boards)
 {
+	/*
+	 * Destroys the board struct.
+	 *
+	 * Args:
+	 *	boards: The pointer to the pointer to the struct to destroy.
+	 */
 	if (!*boards) return;
 	free(*boards);
 	*boards = NULL;
@@ -31,6 +54,14 @@ void Boards__destroy(Boards** boards)
 }
 
 void Boards__set_piece(Boards* boards, const char piece, const Coordinates* coordinates){
+	/*
+	 * Set the bitboard of the specified piece to one at a given location.
+	 *
+	 * Args:
+	 *	boards: The boards struct to operate on.
+	 *	piece: piece whose bitboard to access.
+	 *	coordinates: xyz coordinates to one.
+	 */
 	if (!boards)
 	{
 		return;
@@ -41,6 +72,14 @@ void Boards__set_piece(Boards* boards, const char piece, const Coordinates* coor
 }
 
 void Boards__unset_piece(Boards* boards, const char piece, const Coordinates* coordinates){
+	/*
+	 * Set the bitboard of the specified piece to zero at a given location.
+	 *
+	 * Args:
+	 *	boards: The boards struct to operate on.
+	 *	piece: piece whose bitboard to access.
+	 *	coordinates: xyz coordinates to zero.
+	 */
 	if (!boards)
 	{
 		return;
@@ -51,6 +90,13 @@ void Boards__unset_piece(Boards* boards, const char piece, const Coordinates* co
 }
 
 void Boards__unset(Boards* boards, const Coordinates* coordinates){
+	/*
+	 * Set the bitboard of all pieces to zero at a given location.
+	 *
+	 * Args:
+	 *	boards: The boards struct to operate on.
+	 *	coordinates: xyz coordinates to zero.
+	 */
 	if (!boards)
 	{
 		return;
@@ -62,6 +108,16 @@ void Boards__unset(Boards* boards, const Coordinates* coordinates){
 }
 
 char Boards__get_piece(Boards* boards, const Coordinates* coordinates){
+	/*
+	 * Retrieve piece at given location.
+	 *
+	 * Args:
+	 *	boards: Boards struct to read.
+	 *	coordinateS: the coordinates to retrieve the piece on.
+	 *
+	 * Returns:
+	 *	Retrieves the character representation of the piece at the location.
+	 */
 	if (!boards)
 	{
 		return '\0';
@@ -75,6 +131,17 @@ char Boards__get_piece(Boards* boards, const Coordinates* coordinates){
 }
 
 bool Boards__check_piece_exists(Boards* boards, const char piece, const Coordinates* coordinates){
+	/*
+	 * Check if the given piece exists at the location.
+	 *
+	 * Args:
+	 *	boards: Boards struct to read.
+	 *	piece: the piece to look for.
+	 *	coordinateS: the coordinates to retrieve the piece on.
+	 *
+	 * Returns:
+	 *	Whether the piece is in the location specified.
+	 */
 	if (!boards)
 	{
 		return false;
@@ -86,6 +153,18 @@ bool Boards__check_piece_exists(Boards* boards, const char piece, const Coordina
 
 Coordinates* Boards__get_coordinates_first_instance(Boards* boards, const char piece)
 {
+	/*
+	 * Retrieves the first coordinate where the bitboard for a given piece is set to high.
+	 *	This is the first instance we see the piece. Useful for King moves
+	 *	because there is always only one so it is faster.
+	 *
+	 * Args:
+	 *	boards: The Boards object to read.
+	 *	piece: the piece whose bitboard to pull.
+	 *
+	 * Returns:
+	 *	A Coordinate where the piece exists in the overall board.
+	 */
 	if (!boards) return NULL;
 	int index = piece_char_to_int(piece);
 
@@ -95,6 +174,18 @@ Coordinates* Boards__get_coordinates_first_instance(Boards* boards, const char p
 
 CoordinateList* Boards__get_all_coordinates(Boards* boards, const char piece)
 {
+	/*
+	 * Retrieves all coordinates where the bitboard for a given piece is set to high.
+	 *	This is where all instances of the piece are.
+	 *
+	 * Args:
+	 *	board: The bitboard for a specific piece.
+	 *	piece: the piece whose bitboard to pull.
+	 *
+	 * Returns:
+	 *	A CoordinateList (linked list of Coordinates) where the piece exists
+	 *	in the overall board.
+	 */
 	if (!boards) return NULL;
 	int index = piece_char_to_int(piece);
 
@@ -102,14 +193,21 @@ CoordinateList* Boards__get_all_coordinates(Boards* boards, const char piece)
 	return Board__get_all_instances(board);
 }
 
-CoordinateList* Boards__filter_out_impossible_moves(CoordinateList* moves, const char piece, const Coordinates* coordinates)
-{
-
-	return moves;
-}
-
 bool check_square_is_moveable(Boards* boards, const char piece, const Coordinates* end)
 {
+	/*
+	 * Checks if the square can be moved to.
+	 * A square can be moved to if there is no piece there or if the
+	 * piece is the opposite color (capture).
+	 *
+	 * Args:
+	 *	boards: The Boards struct to read.
+	 *	piece: the piece that is moving.
+	 *	end: the coordinates that piece intends to move to.
+	 *
+	 * Returns:
+	 *	If we are able to move a piece.
+	 */
 	char end_piece = Boards__get_piece(boards, end);
 	if (end_piece)
 	{
@@ -121,6 +219,19 @@ bool check_square_is_moveable(Boards* boards, const char piece, const Coordinate
 
 bool check_path_clear(Boards* boards, const char piece, const Coordinates* start, const Coordinates* end, const Coordinates* vector)
 {
+	/*
+	 * Checks if the path between start and end coordinates is clear.
+	 *
+	 * Args:
+	 *	boards: The Boards struct to read.
+	 *	piece: the piece that is moving.
+	 *	start: the location of the piece that is moving.
+	 *	end: the coordinates that piece intends to move to.
+	 *	vector: the direction the piece is going towards.
+	 *
+	 * Returns:
+	 *	Whether the path is clear for the piece to move.
+	 */
 	Coordinates* current_coordinates = Coordinates__copy(start);
 
 	// retrieve first nonempty coordinate if there is any
@@ -134,6 +245,19 @@ bool check_path_clear(Boards* boards, const char piece, const Coordinates* start
 
 bool check_pawn_moves(Boards* boards, const char piece, const Coordinates* start, const Coordinates* diff, const Coordinates* end)
 {
+	/*
+	 * Checks if the pawn can make its move.
+	 *
+	 * Args:
+	 *	boards: The Boards struct to read.
+	 *	piece: the pawn that is moving.
+	 *	start: the location of the pawn that is moving.
+	 *	diff: the direction the pawn is going towards.
+	 *	end: the coordinates that pawn intends to move to.
+	 *
+	 * Returns:
+	 *	Whether the pawn can make the move.
+	 */
 
 	// No attack pawn
 	if (diff->x != 0 && diff->y == 0 && diff-> z == 0)
@@ -161,6 +285,18 @@ bool check_pawn_moves(Boards* boards, const char piece, const Coordinates* start
 
 bool is_move_valid(Boards* boards,const char piece, const Coordinates* start, const Coordinates* end)
 {
+	/*
+	 * Checks if the move the player wants to make, can be made.
+	 *
+	 * Args:
+	 *	boards: the Boards struct to read from.
+	 *	piece: the piece that is moving.
+	 *	start: the location of the piece that is moving.
+	 *	end: where the piece is moving to.
+	 *
+	 * Returns:
+	 *	If the move is valid and can be made or not.
+	 */
 	if (Coordinates__is_equal(start, end)) return false;
 	bool is_possible = is_move_possible(piece, start, end);
 	if (!is_possible) return false;
@@ -206,4 +342,28 @@ bool is_move_valid(Boards* boards,const char piece, const Coordinates* start, co
 	// TODO: STILL NEED TO ACCOUNT FOR:
 	// - Castling
 	// - En Passant
+}
+
+bool make_move(Boards* boards, const char piece, const Coordinates* start, const Coordinates* end)
+{
+	/*
+	 * Moves a piece.
+	 *
+	 * Args:
+	 *	boards: the Boards struct to read from.
+	 *	piece: the piece that is moving.
+	 *	start: the location of the piece that is moving.
+	 *	end: where the piece is moving to.
+	 *
+	 * Returns:
+	 *	If the move has been made.
+	 */
+	// if in check, see if moves are in the check list
+	bool is_valid = is_move_valid(boards, piece, start, end);
+	if (!is_valid) return false;
+	// check if move creates a check on its own king
+	Boards__unset_piece(boards, piece, start);
+	Boards__set_piece(boards, piece, end);
+	// check if in check or mate
+	return true;
 }

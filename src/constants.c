@@ -30,12 +30,15 @@ bool is_piece_black(const char c)
 Coordinates* get_rook_vector_index(const Coordinates* c)
 {
 	/*
-	 * Get hashing function for the rook direction vector.
+	 * Get hash for the rook direction vector.
 	 * This is done by finding the nonzero coordinate, and then checking if that
 	 * coordinate is negative or positive.
 	 *
 	 * Args:
 	 *	c: the coordinates object representing the difference between start and end in the move.
+	 *
+	 * Returns:
+	 *	Direction the coordinate points to.
 	 */
 	if (!(c->x || c->y || c->z))
 	{
@@ -66,6 +69,16 @@ Coordinates* get_rook_vector_index(const Coordinates* c)
 
 Coordinates* get_priest_vector_index(const Coordinates* c)
 {
+	/*
+	 * Get hash for the priest direction vector.
+	 * This is done by finding the zero coordinate, and then checking what
+	 * sign the other coordinates are.
+	 *
+	 * Args:
+	 *	c: the coordinates object representing the difference between start and end in the move.
+	 * Returns:
+	 *	Direction the coordinate points to.
+	 */
 	if (!(!c->x || !c->y || !c->z))
 	{
 		return 0;
@@ -99,6 +112,16 @@ Coordinates* get_priest_vector_index(const Coordinates* c)
 
 Coordinates* get_bishop_vector_index(const Coordinates* c)
 {
+	/*
+	 * Get hash for the bishop direction vector.
+	 * This is done by checking the signs of each coordinate to get the hash/
+	 *
+	 * Args:
+	 *	c: the coordinates object representing the difference between start and end in the move.
+	 *
+	 * Returns:
+	 *	Direction the coordinate points to.
+	 */
 	// all values must be nonzero
 	if (!(c->x && c->y && c->z))
 	{

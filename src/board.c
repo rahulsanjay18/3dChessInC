@@ -153,8 +153,7 @@ Coordinates* Board__get_first_instance(const Board* board)
 	 *	board: The bitboard for a specific piece.
 	 *
 	 * Returns:
-	 *	A CoordinateList (linked list of Coordinates) where the piece exists
-	 *	in the overall board.
+	 *	A Coordinate where the piece exists in the overall board.
 	 */
 	int index = -1;
 	int x = 0;
