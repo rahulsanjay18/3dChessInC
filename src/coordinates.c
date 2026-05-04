@@ -48,26 +48,75 @@ void Coordinates__destroy(Coordinates** coordinates){
 
 bool Coordinates__is_equal(const Coordinates* c1, const Coordinates* c2)
 {
+	/*
+	 * Checks if two coordinates are equal.
+	 *	That is, the x, y, and z coordinates match.
+	 *
+	 * Args:
+	 *	c1: the first coordinate.
+	 *	c2: the second coordinate.
+	 *
+	 * Returns:
+	 *	True if the xyz coordinates match, False otherwise.
+	 */
 	return c1->x == c2->x && c1->y == c2->y && c1->z == c2->z;
 }
 
 Coordinates* Coordinates__add(const Coordinates* c1, const Coordinates* c2)
 {
+	/*
+	 * Adds two coordinates together.
+	 *
+	 * Args:
+	 *	c1: the first coordinate.
+	 *	c2: the second coordinate.
+	 *
+	 * Returns:
+	 *	Coordinate struct that is the sum of the two coordinates.
+	 */
 	return Coordinates__create(c2->x + c1->x, c2->y + c1->y, c2->z + c1->z);
 }
 
 Coordinates* Coordinates__subtract(const Coordinates* c1, const Coordinates* c2)
 {
+	/*
+	 * Subtracts two coordinates.
+	 *
+	 * Args:
+	 *	c1: the first coordinate.
+	 *	c2: the second coordinate.
+	 *
+	 * Returns:
+	 *	Coordinate struct that is the difference of the two coordinates.
+	 */
 	return Coordinates__create(c2->x - c1->x, c2->y - c1->y, c2->z - c1->z);
 }
 
 Coordinates* Coordinates__copy(const Coordinates* c)
 {
+	/*
+	 * Copies a coordinate struct.
+	 *
+	 * Args:
+	 *	c: the coordinate struct to copy.
+	 *
+	 * Returns:
+	 *	Copy of the coordinate struct input.
+	 */
 	return Coordinates__create(c->x, c->y, c->z);
 }
 
 void CoordinateNode__init(CoordinateNode* result, Coordinates* c)
 {
+	/*
+	 * Initializes coordinate node.
+	 *
+	 * Args:
+	 *	result: Allocated CoordinateNode pointer.
+	 *	c: Coordinate struct to populate the node with.
+	 *		Can be NULL.
+	 */
+
 	if (!result)
 	{
 		return;
@@ -82,6 +131,16 @@ void CoordinateNode__init(CoordinateNode* result, Coordinates* c)
 
 CoordinateNode* CoordinateNode__create(Coordinates* c)
 {
+	/*
+	 * Create CoordinateNode struct.
+	 *
+	 * Args:
+	 *	c: Coordinate struct to populate node with.
+	 *		Can be NULL.
+	 *
+	 * Returns:
+	 *	Pointer to the newly created CoordinateNode.
+	 */
 	CoordinateNode* result = (CoordinateNode*) malloc(sizeof(CoordinateNode));
 	CoordinateNode__init(result, c);
 
@@ -90,6 +149,12 @@ CoordinateNode* CoordinateNode__create(Coordinates* c)
 
 void CoordinateNode__destroy(CoordinateNode** c)
 {
+	/*
+	 * Destroys coordinate struct.
+	 *
+	 * Args:
+	 *	c: Pointer to CoordinateNode pointer.
+	 */
 	if (!*c)return;
 	free(*(c));
 	*c=NULL;
@@ -97,6 +162,18 @@ void CoordinateNode__destroy(CoordinateNode** c)
 
 bool CoordinateNode__compare_values(const CoordinateNode* node1, const CoordinateNode* node2)
 {
+	/*
+	 * Checks if two coordinate nodes are equal.
+	 *	That is, the x, y, and z coordinates match.
+	 *
+	 * Args:
+	 *	node1: the first coordinate node.
+	 *	node2: the second coordinate node.
+	 *
+	 * Returns:
+	 *	True if the xyz coordinates match, False otherwise.
+	 */
+
 	return Coordinates__is_equal(node1->c, node2->c);
 }
 
